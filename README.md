@@ -22,6 +22,6 @@ AutoChess have several objectives:
 
 ## AutoChess architecture:
 
-AutoChess project contain 3 main component:
+AutoChess project contain 3 main components:
 ![image](https://user-images.githubusercontent.com/94933763/184927019-ffdc79c8-f003-4536-b3dd-865ad1d93013.png)
 
