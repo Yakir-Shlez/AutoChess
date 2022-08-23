@@ -1,0 +1,261 @@
+Start offline game
+Execute AI move: b1-c3
+Execute second AI move: b8-c6
+Execute AI move: g1-f3
+Execute second AI move: g8-f6
+Execute AI move: d2-d3
+Execute second AI move: d7-d6
+Execute AI move: c1-e3
+Execute second AI move: a7-a6
+Execute AI move: d1-d2
+Execute second AI move: e7-e6
+Execute AI move: e1-c1
+Execute second AI move: c8-d7
+Execute AI move: c1-b1
+Execute second AI move: f8-e7
+Execute AI move: d1-e1
+Execute second AI move: e8-g8
+Execute AI move: e1-d1
+Execute second AI move: f8-e8
+Execute AI move: h1-g1
+Execute second AI move: a8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-a8
+Execute AI move: e1-d1
+Execute second AI move: a8-c8
+Execute AI move: g1-h1
+Execute second AI move: c8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-a8
+Execute AI move: e1-d1
+Execute second AI move: a8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-c8
+Execute AI move: d1-e1
+Execute second AI move: c8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-a8
+Execute AI move: g1-h1
+Execute second AI move: a8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-c8
+Execute AI move: e1-d1
+Execute second AI move: c8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-a8
+Execute AI move: d1-e1
+Execute second AI move: a8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-c8
+Execute AI move: g1-h1
+Execute second AI move: c8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-a8
+Execute AI move: e1-d1
+Execute second AI move: a8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-c8
+Execute AI move: d1-e1
+Execute second AI move: c8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-a8
+Execute AI move: g1-h1
+Execute second AI move: a8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-c8
+Execute AI move: e1-d1
+Execute second AI move: c8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-a8
+Execute AI move: d1-e1
+Execute second AI move: a8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-c8
+Execute AI move: g1-h1
+Execute second AI move: c8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-a8
+Execute AI move: e1-d1
+Execute second AI move: a8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-c8
+Execute AI move: d1-e1
+Execute second AI move: c8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-a8
+Execute AI move: g1-h1
+Execute second AI move: a8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-c8
+Execute AI move: e1-d1
+Execute second AI move: c8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-a8
+Execute AI move: d1-e1
+Execute second AI move: a8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-c8
+Execute AI move: g1-h1
+Execute second AI move: c8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-a8
+Execute AI move: e1-d1
+Execute second AI move: a8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-c8
+Execute AI move: d1-e1
+Execute second AI move: c8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-a8
+Execute AI move: g1-h1
+Execute second AI move: a8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-c8
+Execute AI move: e1-d1
+Execute second AI move: c8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-a8
+Execute AI move: d1-e1
+Execute second AI move: a8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-c8
+Execute AI move: g1-h1
+Execute second AI move: c8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-a8
+Execute AI move: e1-d1
+Execute second AI move: a8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-c8
+Execute AI move: d1-e1
+Execute second AI move: c8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-a8
+Execute AI move: g1-h1
+Execute second AI move: a8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-c8
+Execute AI move: e1-d1
+Execute second AI move: c8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-a8
+Execute AI move: d1-e1
+Execute second AI move: a8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-c8
+Execute AI move: g1-h1
+Execute second AI move: c8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-a8
+Execute AI move: e1-d1
+Execute second AI move: a8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-c8
+Execute AI move: d1-e1
+Execute second AI move: c8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-a8
+Execute AI move: g1-h1
+Execute second AI move: a8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-c8
+Execute AI move: e1-d1
+Execute second AI move: c8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-a8
+Execute AI move: d1-e1
+Execute second AI move: a8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-c8
+Execute AI move: g1-h1
+Execute second AI move: c8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-a8
+Execute AI move: e1-d1
+Execute second AI move: a8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-c8
+Execute AI move: d1-e1
+Execute second AI move: c8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-a8
+Execute AI move: g1-h1
+Execute second AI move: a8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-c8
+Execute AI move: e1-d1
+Execute second AI move: c8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-a8
+Execute AI move: d1-e1
+Execute second AI move: a8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-c8
+Execute AI move: g1-h1
+Execute second AI move: c8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-a8
+Execute AI move: e1-d1
+Execute second AI move: a8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-c8
+Execute AI move: d1-e1
+Execute second AI move: c8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-a8
+Execute AI move: g1-h1
+Execute second AI move: a8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-c8
+Execute AI move: e1-d1
+Execute second AI move: c8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-a8
+Execute AI move: d1-e1
+Execute second AI move: a8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-c8
+Execute AI move: g1-h1
+Execute second AI move: c8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-a8
+Execute AI move: e1-d1
+Execute second AI move: a8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-c8
+Execute AI move: d1-e1
+Execute second AI move: c8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-a8
+Execute AI move: g1-h1
+Execute second AI move: a8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-c8
+Execute AI move: e1-d1
+Execute second AI move: c8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-a8
+Execute AI move: d1-e1
+Execute second AI move: a8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-c8
+Execute AI move: g1-h1
+Execute second AI move: c8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-a8
+Execute AI move: e1-d1
+Execute second AI move: a8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-c8
+Execute AI move: d1-e1
+Execute second AI move: c8-b8
+Execute AI move: e1-d1
+Execute second AI move: b8-a8
+Execute AI move: g1-h1
+Execute second AI move: a8-b8
+Execute AI move: d1-e1
+Execute second AI move: b8-c8
+Execute AI move: e1-d1
+Execute second AI move: c8-b8
+Execute AI move: h1-g1
+Execute second AI move: b8-a8

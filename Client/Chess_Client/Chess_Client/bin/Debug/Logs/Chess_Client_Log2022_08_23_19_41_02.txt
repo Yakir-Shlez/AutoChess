@@ -1,0 +1,4 @@
+Start offline game
+Execute player move: e2-e4
+Execute AI move: b8-c6
+Execute player move: f1-c4

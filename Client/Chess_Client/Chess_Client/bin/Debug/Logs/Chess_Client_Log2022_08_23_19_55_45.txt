@@ -1,0 +1,82 @@
+Start offline game
+Execute AI move: e2-e4
+Execute second AI move: b8-c6
+Execute AI move: b1-c3
+Execute second AI move: g8-f6
+Execute AI move: d2-d4
+Execute second AI move: e7-e5
+Execute AI move: d4-e5
+Execute second AI move: c6-e5
+Execute AI move: c1-f4
+Execute second AI move: e5-c6
+Execute AI move: e4-e5
+Execute second AI move: d8-e7
+Execute AI move: d1-e2
+Execute second AI move: c6-d4
+Execute AI move: e5-f6
+Execute second AI move: d4-c2
+Execute AI move: e1-d1
+Execute second AI move: e7-e2
+Execute AI move: g1-e2
+Execute second AI move: c2-a1
+Execute AI move: c3-d5
+Execute second AI move: a8-b8
+Execute AI move: d5-c7
+Execute second AI move: e8-d8
+Execute AI move: c7-e8
+Execute second AI move: f8-c5
+Execute AI move: f4-b8
+Execute second AI move: h8-e8
+Execute AI move: d1-c1
+Execute second AI move: g7-f6
+Execute AI move: c1-b1
+Execute second AI move: b7-b6
+Execute AI move: b8-a7
+Execute second AI move: c8-a6
+Execute AI move: e2-c1
+Execute second AI move: e8-e1
+Execute AI move: b2-b4
+Execute second AI move: c5-f2
+Execute AI move: b1-a1
+Execute second AI move: e1-c1
+Execute AI move: a1-b2
+Execute second AI move: c1-f1
+Execute AI move: h1-f1
+Execute second AI move: a6-f1
+Execute AI move: g2-g3
+Execute second AI move: d8-c8
+Execute AI move: g3-g4
+Execute second AI move: c8-b7
+Execute AI move: a7-b6
+Execute second AI move: f2-b6
+Execute AI move: a2-a4
+Execute second AI move: d7-d5
+Execute AI move: a4-a5
+Execute second AI move: b6-c7
+Execute AI move: h2-h4
+Execute second AI move: f1-e2
+Execute AI move: g4-g5
+Execute second AI move: f6-f5
+Execute AI move: b2-c2
+Execute second AI move: c7-d6
+Execute AI move: c2-c3
+Execute second AI move: f5-f4
+Execute AI move: c3-b3
+Execute second AI move: f4-f3
+Execute AI move: b4-b5
+Execute second AI move: e2-b5
+Execute AI move: b3-b2
+Execute second AI move: f3-f2
+Execute AI move: g5-g6
+Execute second AI move: f2-f1
+Promote second AI: Queen
+Execute AI move: g6-h7
+Execute second AI move: f1-f2
+Execute AI move: b2-b3
+Execute second AI move: f2-h4
+Execute AI move: h7-h8
+Promote AI: Queen
+Execute second AI move: h4-h8
+Execute AI move: b3-a2
+Execute second AI move: b5-d3
+Player won
