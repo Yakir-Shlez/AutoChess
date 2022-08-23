@@ -1,8 +1,3 @@
-/**
- * Author Teemu Mäntykallio
- * Initializes the library and runs the stepper
- * motor in alternating directions.
- */
 #include <ESP_FlexyStepper.h>
 
 #define EN_PIN_1           13 // Enable
