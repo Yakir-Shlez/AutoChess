@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Chess_Client
 {
-    public class Move
+    public class Move : IEquatable<Move>
     {
         public int sourceRowIndex;
         public int sourceColIndex;
@@ -55,6 +55,18 @@ namespace Chess_Client
         public Move ReverseMove()
         {
             return new Move(this.destRowIndex, this.destColIndex, this.sourceRowIndex, this.sourceColIndex);
+        }
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Move);
+        }
+        public bool Equals(Move other)
+        {
+            return other != null &&
+                   sourceRowIndex == other.sourceRowIndex &&
+                   sourceColIndex == other.sourceColIndex &&
+                   destRowIndex == other.destRowIndex &&
+                   destColIndex == other.destColIndex;
         }
         public override string ToString()
         {

@@ -99,7 +99,7 @@ namespace Chess_Client
                             (col > 0 && i == (row * 8 + col - 1)) ||
                             (col < 7 && i == (row * 8 + col + 1)))
                         {
-                            if ((i / 8 == avoidDestRow && i % 8 == avoidDestCol) || (row == avoidDestRow && col == avoidDestCol))
+                            if ((i / 8 == avoidSrcRow && i % 8 == avoidSrcCol) || (row == avoidDestRow && col == avoidDestCol))
                                 graph[row * 8 + col, i] = 1000;
                             else
                                 graph[row * 8 + col, i] = board.board[i / 8, i % 8].type == PieceType.Null ? 1 : 10;
@@ -192,7 +192,10 @@ namespace Chess_Client
 
 
             if (avoidSourceMove == null)
-                avoidSourceMove = allMovesCombined[allMovesCombined.Count - 1];
+                avoidSourceMove = new Move(allMovesCombined[0].sourceRowIndex,
+                    allMovesCombined[0].sourceColIndex,
+                    allMovesCombined[allMovesCombined.Count - 1].destRowIndex,
+                    allMovesCombined[allMovesCombined.Count - 1].destColIndex);
 
             if (evilPieces.Count != 0)
             {
@@ -235,25 +238,6 @@ namespace Chess_Client
                 lastDir = curDir;
             }
             return shortShortPath;
-        }
-        public struct PieceToMove
-        {
-            public int rowIndex;
-            public int colIndex;
-            public PieceToMove(int rowIndex, int colIndex)
-            {
-                this.rowIndex = rowIndex;
-                this.colIndex = colIndex;
-            }
-            public PieceToMove(Move move)
-            {
-                this.rowIndex = move.destRowIndex;
-                this.colIndex = move.destColIndex;
-            }
-            public override string ToString()
-            {
-                return ((char)(colIndex + (int)'a') + (rowIndex + 1).ToString());
-            }
         }
     }
 }

@@ -1,0 +1,2 @@
+Start offline game
+Execute AI move: b1-c3

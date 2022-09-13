@@ -782,7 +782,7 @@ namespace Chess_Client
         }
         #endregion
 
-        #region helpers functions
+        #region helper functions
         public int FlipRowIndex(int rowIndex)
         {
             bool flipVertical;
@@ -840,12 +840,10 @@ namespace Chess_Client
             else
                 return PieceColor.White;
         }
-
         public override bool Equals(object obj)
         {
             return Equals(obj as ChessBoard);
         }
-
         public bool Equals(ChessBoard other)
         {
             return other != null &&
@@ -857,7 +855,6 @@ namespace Chess_Client
                    blackShortCastleFlag == other.blackShortCastleFlag &&
                    blackLongCastleFlag == other.blackLongCastleFlag;
         }
-
         public override int GetHashCode()
         {
             var hashCode = -1594356302;

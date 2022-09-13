@@ -1,0 +1,6 @@
+depth: 1
+play move start time: 13/9/2022 4:31:51 PM
+play total availabe moves: 20
+play move end time: 13/9/2022 4:31:51 PM
+play move delta time (seconds): 0.0220093
+play move delta time (ticks): 220093

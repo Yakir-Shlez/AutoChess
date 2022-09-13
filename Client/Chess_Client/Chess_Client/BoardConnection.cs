@@ -32,7 +32,7 @@ namespace Chess_Client
                 foreach (var dev in client.DiscoverDevices())
                 {
                     richTextBox1.Text += dev.DeviceName + "\n";
-                    if (dev.DeviceName.Contains("ESP32test")) //TBD proper name
+                    if (dev.DeviceName.Contains("AutoChessBoard"))
                     {
                         device = dev;
                         break;

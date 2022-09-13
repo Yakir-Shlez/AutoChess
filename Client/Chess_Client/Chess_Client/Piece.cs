@@ -182,5 +182,9 @@ namespace Chess_Client
             hashCode = hashCode * -1521134295 + color.GetHashCode();
             return hashCode;
         }
+        public override string ToString()
+        {
+            return this.color.ToString() + " " + this.type.ToString();
+        }
     }
 }

@@ -43,7 +43,8 @@ namespace Chess_Client
         public Config config_File;
         bool serverOnline;
         Random rand;
-        BluetoothClient boardClient;
+        AutoChessBoard boardClient;
+        bool moveCandidate;
 
         public AutoChess()
         {
@@ -505,6 +506,8 @@ namespace Chess_Client
         }
         private void SquareClickHandler(PictureBox sender)
         {
+            if (boardClient != null && boardClient.Connected == true)
+                return;
             int rowIndex;
             int colIndex;
 
@@ -530,6 +533,7 @@ namespace Chess_Client
             if (currentMove.sourceRowIndex == -1 && currentMove.sourceColIndex == -1)
             {
                 currentMove = new Move();
+                moveCandidate = false;
                 currentGameBoard.PrintBoardPattern(currentMove);
                 //get move source square and highlight possible moves
                 allSquaresPanels[currentGameBoard.FlipRowIndex(rowIndex), currentGameBoard.FlipColIndex(colIndex)].BackColor = Color.Silver; //direct print - need to flip again
@@ -541,6 +545,7 @@ namespace Chess_Client
             {
                 //user selected the source cell
                 currentMove = new Move();
+                moveCandidate = false;
                 currentGameBoard.PrintBoardPattern(currentMove);
                 return;
             }
@@ -590,6 +595,8 @@ namespace Chess_Client
                     }
                 currentGameBoard.ExecuteGameMove(currentMove);
 
+                await Task.Run(() => Thread.Sleep(100));
+
                 if ((currentGameBoard.myColor == PieceColor.White && currentMove.destRowIndex == 7
                     && currentGameBoard.board[currentMove.destRowIndex, currentMove.destColIndex].type == PieceType.Pawn) ||
                     (currentGameBoard.myColor == PieceColor.Black && currentMove.destRowIndex == 0
@@ -603,6 +610,7 @@ namespace Chess_Client
             }
 
             currentMove = new Move();
+            moveCandidate = false;
             bool found = false;
             found = CheckAvailableMove(currentGameBoard.opColor);
 
@@ -643,11 +651,15 @@ namespace Chess_Client
                 return;
             }
 
-            if(boardClient != null && boardClient.Connected == true)
-            {
-                SendBoardMove(AIMove);
-            }
+            ChessBoard tempBoard = currentGameBoard.Copy();
             currentGameBoard.ExecuteGameMove(AIMove);
+            await Task.Run(() => Thread.Sleep(100));
+
+            if (boardClient != null && boardClient.Connected == true)
+            {
+                boardClient.SendBoardMove(AIMove, tempBoard);
+            }
+            
 
             if (config_File.Testing == true)
                 using (StreamWriter writer = new StreamWriter(testingFile, true))
@@ -660,7 +672,6 @@ namespace Chess_Client
                 (currentGameBoard.opColor == PieceColor.Black && AIMove.destRowIndex == 0
                 && currentGameBoard.board[AIMove.destRowIndex, AIMove.destColIndex].type == PieceType.Pawn))
             {
-                currentGameBoard.PromoteOp(new Piece(PieceType.Queen, currentGameBoard.opColor));
                 if (config_File.Testing == true)
                     using (StreamWriter writer = new StreamWriter(testingFile, true))
                     {
@@ -668,8 +679,9 @@ namespace Chess_Client
                     }
                 if (boardClient != null && boardClient.Connected == true)
                 {
-                    SendBoardPromo(new Piece(PieceType.Queen, currentGameBoard.opColor), AIMove.destRowIndex, AIMove.destColIndex);
+                    boardClient.SendBoardPromo(new Piece(PieceType.Queen, currentGameBoard.opColor), AIMove, currentGameBoard.Copy());
                 }
+                currentGameBoard.PromoteOp(new Piece(PieceType.Queen, currentGameBoard.opColor));
             }
             currentGameBoard.currentTurn = GameState.MyTurn;
             found = CheckAvailableMove(currentGameBoard.myColor);
@@ -691,7 +703,7 @@ namespace Chess_Client
                     DisplayOnePanel(logInPanel);
                 return;
             }
-            if(config_File.Testing == true && config_File.Testing_Ai_Vs_Ai == true)
+            if (config_File.Testing == true && config_File.Testing_Ai_Vs_Ai == true)
             {
                 Move secAIMove = await Task.Run(() => secondAi.PlayMove());
                 if (secAIMove.ToString() == new Move().ToString())
@@ -721,6 +733,11 @@ namespace Chess_Client
                 }
                 OfflineGameHandler(true);
             }
+
+            if (boardClient != null && boardClient.Connected == true)
+            {
+                boardClient.StartUserTurn();
+            }
         }
         private bool CheckAvailableMove(PieceColor color)
         {
@@ -746,105 +763,6 @@ namespace Chess_Client
             return found;
         }
         #endregion
-
-        #region Board Functions
-        private void SendBoardMove(Move move)
-        {
-            if (config_File.Testing == true)
-                using (StreamWriter writer = new StreamWriter(testingFile, true))
-                {
-                    writer.WriteLine("Sending move to board: " + move.ToString());
-                }
-            if (boardClient == null || boardClient.Connected == false)
-            {
-                if (config_File.Testing == true)
-                    using (StreamWriter writer = new StreamWriter(testingFile, true))
-                    {
-                        writer.WriteLine("Board is offline");
-                    }
-                return;
-            }
-            List<List<Move>> allMovesToSend = PathFindingAlg.GetShortestPath(currentGameBoard.Copy(), move, null, null);
-            var stream = boardClient.GetStream();
-            StreamWriter sw = new StreamWriter(stream, System.Text.Encoding.ASCII);
-            for(int i = 0; i < allMovesToSend.Count; i++)
-            {
-                for(int j = 0; j < allMovesToSend[i].Count; j++)
-                {
-                    sw.Write(allMovesToSend[i][j].ToString() + "|");
-                    sw.Flush();
-                    if (GetBoardAck() == false)
-                        MessageBox.Show("Board rejected move");
-                }
-            }
-            for (int i = allMovesToSend.Count - 2; i >= 0; i--)
-            {
-                for (int j = allMovesToSend[i].Count - 1; j >= 0; j--)
-                {
-                    sw.Write(allMovesToSend[i][j].ReverseMove().ToString() + "|");
-                    sw.Flush();
-                    if (GetBoardAck() == false)
-                        MessageBox.Show("Board rejected move");
-                }
-            }
-            sw.Flush();
-            //TBD to board
-        }
-        private void SendBoardPromo(Piece piece, int row, int col)
-        {
-            if (config_File.Testing == true)
-                using (StreamWriter writer = new StreamWriter(testingFile, true))
-                {
-                    writer.WriteLine("Sending promo to board: " + piece.type.ToString() + " row: " + row.ToString() + " col: " + col.ToString());
-                }
-            if (boardClient == null || boardClient.Connected == false)
-            {
-                if (config_File.Testing == true)
-                    using (StreamWriter writer = new StreamWriter(testingFile, true))
-                    {
-                        writer.WriteLine("Board is offline");
-                    }
-                return;
-            }
-            var stream = boardClient.GetStream();
-            StreamWriter sw = new StreamWriter(stream, System.Text.Encoding.ASCII);
-            //sw.WriteLine(move.ToString());
-            sw.Flush();
-            //TBD to board
-        }
-
-        private bool GetBoardAck()
-        {
-            if (config_File.Testing == true)
-                using (StreamWriter writer = new StreamWriter(testingFile, true))
-                {
-                    writer.WriteLine("Getting board Ack");
-                }
-            if (boardClient == null || boardClient.Connected == false)
-            {
-                if (config_File.Testing == true)
-                    using (StreamWriter writer = new StreamWriter(testingFile, true))
-                    {
-                        writer.WriteLine("Board is offline");
-                    }
-                return false;
-            }
-            bool ack = false;
-            char[] ackRes = new char[] { 'A', 'c', 'k', '_', '_', '|' };
-            var stream = boardClient.GetStream();
-            char[] buf = new char[6];
-            StreamReader sr = new StreamReader(stream, System.Text.Encoding.ASCII);
-            for (int i = 0; i < 6; i++)
-            {
-                int line = sr.Read(buf, 0, 1);
-                if (buf[0] != ackRes[i])
-                    return false;
-            }
-            return true;
-        }
-
-        #endregion
-
         private async void logInButton_Click(object sender, EventArgs e)
         {
             if (usernameLogIn.Text.Contains("/") || passwordLogIn.Text.Contains("/"))
@@ -976,11 +894,17 @@ namespace Chess_Client
 
             DisplayGame();
             currentMove = new Move();
+            moveCandidate = false;
             gameTimer.Enabled = true;
             drawOffer = false;
             gameOpMoveRec = false;
             promotoeFlag = false;
             promotionFlagWait = false;
+
+            if (boardClient != null && boardClient.Connected == true)
+            {
+                boardClient.GameInit(currentGameBoard.Copy());
+            }
         }
 
         private void cancelSearch_Click(object sender, EventArgs e)
@@ -1247,7 +1171,7 @@ namespace Chess_Client
         }
         #endregion
 
-        private void gameTimer_Tick(object sender, EventArgs e)
+        private async void gameTimer_Tick(object sender, EventArgs e)
         {
             //clock
             TimeSpan addedDelta = DateTime.Now - currentGameBoard.lastMoveTime;
@@ -1262,8 +1186,68 @@ namespace Chess_Client
                 timeOp.Text = (currentGameBoard.opTimer - addedDelta).ToString(@"mm\:ss");
             }
 
+            if (boardClient != null && boardClient.Connected == true && boardClient.waitForUserTurn == true)
+            {
+                Panel[,] allSquaresPanels = new Panel[,] { { panel7, panel10, panel24, panel32, panel40, panel48, panel56, panel64 }
+                                                , { panel3, panel11, panel25, panel33, panel41, panel49, panel57, panel65 }
+                                                , { panel14, panel9, panel23, panel31, panel999, panel47, panel55, panel63 }
+                                                , { panel15, panel8, panel22, panel30, panel38, panel46, panel54, panel62 }
+                                                , { panel16, panel6, panel21, panel29, panel37, panel45, panel53, panel61 }
+                                                , { panel17, panel5, panel20, panel28, panel36, panel44, panel52, panel60 }
+                                                , { panel18, panel4, panel13, panel27, panel35, panel43, panel51, panel59 }
+                                                , { panel19, panel2, panel12, panel26, panel34, panel42, panel50, panel58 } };
 
-            if(offlineGame == true)
+                while (boardClient.CheckMsgFromBoard())
+                {
+                    string line = boardClient.GetMsgFromBoard();
+                    PieceToMove square = boardClient.FlipPieceToMove(new PieceToMove(line[3].ToString() + line[4].ToString()), currentGameBoard);
+                    bool appear = (line.Substring(0, 3) == "apr");
+                    if (currentMove.sourceRowIndex == -1 && currentMove.sourceColIndex == -1 && appear == true)
+                    {
+                        MessageBox.Show("square " + line[3].ToString() + line[4].ToString() + " magically appear, ignoring...");
+                        return;
+                    }
+                    //if (currentMove.sourceRowIndex == -1 && currentMove.sourceColIndex == -1 && currentGameBoard.board[square.rowIndex, square.colIndex].color != currentGameBoard.myColor)
+                    //    return; TBD
+                    if (currentMove.sourceRowIndex == -1 && currentMove.sourceColIndex == -1 && appear == false
+                        && currentGameBoard.board[square.rowIndex, square.colIndex].color == currentGameBoard.myColor)
+                    {
+                        currentMove = new Move();
+                        moveCandidate = false;
+                        currentGameBoard.PrintBoardPattern(currentMove);
+                        //get move source square and highlight possible moves
+                        allSquaresPanels[currentGameBoard.FlipRowIndex(square.rowIndex), currentGameBoard.FlipColIndex(square.colIndex)].BackColor = Color.Silver; //direct print - need to flip again
+                        currentGameBoard.HighlightPossibleMoves(square.rowIndex, square.colIndex);
+                        currentMove.sourceRowIndex = square.rowIndex;
+                        currentMove.sourceColIndex = square.colIndex;
+                    }
+                    else if (currentMove.sourceRowIndex == square.rowIndex && currentMove.sourceColIndex == square.colIndex && appear == true)
+                    {
+                        currentMove = new Move();
+                        moveCandidate = false;
+                        currentGameBoard.PrintBoardPattern(currentMove);
+                    }
+                    else if (allSquaresPanels[currentGameBoard.FlipRowIndex(square.rowIndex), currentGameBoard.FlipColIndex(square.colIndex)].BackColor == Color.PaleGreen 
+                        && appear == true)
+                    {
+                        currentMove.destRowIndex = square.rowIndex;
+                        currentMove.destColIndex = square.colIndex;
+                        if (offlineGame == false)
+                            SendServer(currentMove.ToString());
+                        else
+                        {
+                            OfflineGameHandler(false);
+                        }
+                        if (boardClient != null && boardClient.Connected == true)
+                        {
+                            boardClient.StopUserTurn();
+                            boardClient.CleanMsgsFromBoard();
+                        }
+                    }
+                }
+            }
+
+            if (offlineGame == true)
             {
                 if (promotoeFlag == true && currentGameBoard.currentTurn == GameState.MyTurn)
                 {
@@ -1315,6 +1299,7 @@ namespace Chess_Client
                         {
                             MessageBox.Show("Opponent denied the draw request, Fight!");
                             currentMove = new Move();
+                            moveCandidate = false;
                             currentGameBoard.PrintBoardPattern(currentMove);
                             currentGameBoard.currentTurn = GameState.MyTurn;
                             drawBu.Enabled = true;
@@ -1333,6 +1318,10 @@ namespace Chess_Client
                                 promoPiece = new Piece(PieceType.Bishop, currentGameBoard.opColor);
                             else if (exactLine == "Knigt")
                                 promoPiece = new Piece(PieceType.Knight, currentGameBoard.opColor);
+                            if (boardClient != null && boardClient.Connected == true)
+                            {
+                                boardClient.SendBoardPromo(new Piece(PieceType.Queen, currentGameBoard.opColor), null, currentGameBoard.Copy());
+                            }
                             currentGameBoard.PromoteOp(promoPiece);
                             if (boardClient != null && boardClient.Connected == true)
                             {
@@ -1350,7 +1339,6 @@ namespace Chess_Client
                                         break;
                                     }
                                 }
-                                SendBoardPromo(promoPiece, rowIndex, colIndex);
                             }
                         }
                         promotoeFlag = false;
@@ -1366,6 +1354,7 @@ namespace Chess_Client
                             promotionFlagWait = false;
                         }
                         currentMove = new Move();
+                        moveCandidate = false;
                         currentGameBoard.currentTurn = GameState.OpTurn;
                         drawBu.Enabled = false;
                     }
@@ -1373,6 +1362,7 @@ namespace Chess_Client
                     {
                         MessageBox.Show("Move denied");
                         currentMove = new Move();
+                        moveCandidate = false;
                         currentGameBoard.PrintBoardPattern(currentMove);
                         currentGameBoard.currentTurn = GameState.MyTurn;
                         drawBu.Enabled = true;
@@ -1413,6 +1403,7 @@ namespace Chess_Client
                         {
                             SendServer("No___");
                             currentMove = new Move();
+                            moveCandidate = false;
                             currentGameBoard.PrintBoardPattern(currentMove);
                             currentGameBoard.currentTurn = GameState.OpTurn;
                             drawBu.Enabled = false;
@@ -1463,12 +1454,17 @@ namespace Chess_Client
                     }
                     else
                     {
+                        ChessBoard tempBoard = currentGameBoard.Copy();
+                        currentGameBoard.ExecuteGameMove(new Move(exactLine));
+                        await Task.Run(() => Thread.Sleep(100));
+
                         if (boardClient != null && boardClient.Connected == true)
                         {
-                            SendBoardMove(new Move(exactLine));
+                            boardClient.SendBoardMove(new Move(exactLine), tempBoard);
                         }
-                        currentGameBoard.ExecuteGameMove(new Move(exactLine));
+                        
                         currentMove = new Move();
+                        moveCandidate = false;
                         gameOpMoveRec = true;
                     }
                 }
@@ -1487,6 +1483,7 @@ namespace Chess_Client
             if (currentGameBoard.currentTurn == GameState.MyTurn)
             {
                 currentMove = new Move();
+                moveCandidate = false;
                 currentGameBoard.PrintBoardPattern(currentMove);
                 currentGameBoard.currentTurn = GameState.OpTurn;
                 drawBu.Enabled = false;
@@ -1735,15 +1732,15 @@ namespace Chess_Client
             }
             if (white == 0 || (config_File.Testing == true && config_File.Testing_Ai_Vs_Ai == true))
                 OfflineGameHandler(true);
+            else
+                boardClient.StartUserTurn();
         }
 
         private void boardConnectLogInBtn_Click(object sender, EventArgs e)
         {
             if (boardClient == null || boardClient.Connected == false)
             {
-                boardClient = new BluetoothClient();
-                BoardConnection boardConn = new BoardConnection(boardClient);
-                boardConn.ShowDialog();
+                boardClient = new AutoChessBoard();
                 if (boardClient.Connected == true)
                 {
                     boardConnectLogInBtn.BackColor = Color.LimeGreen;
@@ -1753,6 +1750,7 @@ namespace Chess_Client
                 {
                     boardConnectLogInBtn.BackColor = Color.Salmon;
                     boardConnectMainMenuBtn.BackColor = Color.Salmon;
+                    boardClient.CloseBoard();
                     boardClient = null;
                 }
             }
@@ -1760,7 +1758,7 @@ namespace Chess_Client
             {
                 boardConnectLogInBtn.BackColor = Color.Salmon;
                 boardConnectMainMenuBtn.BackColor = Color.Salmon;
-                boardClient.Close();
+                boardClient.CloseBoard();
                 boardClient = null;
             }
         }

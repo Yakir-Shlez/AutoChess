@@ -1,0 +1,2 @@
+Start offline game
+Execute player move: g1-f3

@@ -6,5 +6,5 @@
   <Testing_AI>true</Testing_AI>
   <Testing_AI_Brain>false</Testing_AI_Brain>
   <Testing_Ai_Vs_Ai>false</Testing_Ai_Vs_Ai>
-  <Testing_AI_Side>-1</Testing_AI_Side>
+  <Testing_AI_Side>1</Testing_AI_Side>
 </Config>
