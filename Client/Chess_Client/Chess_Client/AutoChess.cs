@@ -48,8 +48,8 @@ namespace Chess_Client
 
         public AutoChess()
         {
-            //TBD open DB class
             InitializeComponent();
+            //TBD open DB class
             boardClient = null;
             allPanels = new Panel[allPanelsTabControl.TabPages.Count];
             for(int i= 0; i< allPanelsTabControl.TabPages.Count; i++)
@@ -76,6 +76,51 @@ namespace Chess_Client
             HideAllPanels();
             DisplayOnePanel(connectingToServerPanel);
 
+            //TBD
+            /*
+            Player op = new Player("AutoChess AI", "", "", "1", 1500, 300);
+            /*
+            if (serverOnline == false)
+            {
+                myProfile = new Player("My profile", "", "", "2", 1500, 300);
+                UpdateProfileGUI();
+            }
+
+            offlineGame = true;
+            int white;
+
+            white = rand.NextDouble() >= 0.5 ? 1 : 0;
+
+            if (config_File.Testing == true && config_File.Testing_AI && (config_File.Testing_AI_Side == 0 || config_File.Testing_AI_Side == 1))
+                white = config_File.Testing_AI_Side;
+
+            if (config_File.Testing == true && config_File.Testing_Ai_Vs_Ai == true)
+                white = 0;
+
+            AIDifficulty AIDifficultyForm = new AIDifficulty();
+            AIDifficultyForm.ShowDialog();
+            int chessAIDeifficulty = AIDifficultyForm.difficulty;
+            */
+            /*
+            InitGame(op, 1);
+            currentGameBoard.ExecuteGameMove(new Move("g1-h3"));
+            currentGameBoard.ExecuteGameMove(new Move("b8-c6"));
+            currentGameBoard.ExecuteGameMove(new Move("d2-d4"));
+            currentGameBoard.ExecuteGameMove(new Move("c6-d4"));
+            currentGameBoard.ExecuteGameMove(new Move("e2-e3"));
+            currentGameBoard.ExecuteGameMove(new Move("d4-c2"));
+            currentGameBoard.ExecuteGameMove(new Move("d1-c2"));
+            currentGameBoard.ExecuteGameMove(new Move("g8-f6"));
+            currentGameBoard.ExecuteGameMove(new Move("e3-e4"));
+            currentGameBoard.ExecuteGameMove(new Move("f6-e4"));
+            currentGameBoard.ExecuteGameMove(new Move("c2-e4"));
+            currentGameBoard.ExecuteGameMove(new Move("d7-d5"));
+            currentGameBoard.ExecuteGameMove(new Move("f1-b5"));
+            currentGameBoard.ExecuteGameMove(new Move("c8-d7"));
+            currentGameBoard.ExecuteGameMove(new Move("e4-a4"));
+            List<List<Move>> allMovesToSend = PathFindingAlg.GetShortestPath(currentGameBoard.Copy(), new Move("b5-h1"), null, null);
+            //TBD
+            */
             if (config_File.Testing == false || config_File.TestingWithoutServer == false)
                 ConnectServer();
             else
@@ -1204,7 +1249,7 @@ namespace Chess_Client
                     bool appear = (line.Substring(0, 3) == "apr");
                     if (currentMove.sourceRowIndex == -1 && currentMove.sourceColIndex == -1 && appear == true)
                     {
-                        MessageBox.Show("square " + line[3].ToString() + line[4].ToString() + " magically appear, ignoring...");
+                           MessageBox.Show("square " + line[3].ToString() + line[4].ToString() + " magically appear, ignoring...");
                         return;
                     }
                     //if (currentMove.sourceRowIndex == -1 && currentMove.sourceColIndex == -1 && currentGameBoard.board[square.rowIndex, square.colIndex].color != currentGameBoard.myColor)

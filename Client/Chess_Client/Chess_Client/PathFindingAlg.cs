@@ -210,9 +210,9 @@ namespace Chess_Client
                 }
             }
 
-            board.board[allMovesCombined[allMovesCombined.Count - 1].destRowIndex, allMoves[allMovesCombined.Count - 1].destColIndex] =
-                board.board[allMoves[0].sourceRowIndex, allMoves[0].sourceColIndex];
-            board.board[allMoves[0].sourceRowIndex, allMoves[0].sourceColIndex] = new Piece();
+            board.board[allMovesCombined[allMovesCombined.Count - 1].destRowIndex, allMovesCombined[allMovesCombined.Count - 1].destColIndex] =
+                board.board[allMovesCombined[0].sourceRowIndex, allMovesCombined[0].sourceColIndex];
+            board.board[allMovesCombined[0].sourceRowIndex, allMovesCombined[0].sourceColIndex] = new Piece();
 
             allMovesList.Add(allMovesCombined);
 

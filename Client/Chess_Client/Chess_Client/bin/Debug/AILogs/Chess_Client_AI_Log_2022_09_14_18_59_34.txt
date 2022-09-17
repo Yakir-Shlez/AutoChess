@@ -1,0 +1,21 @@
+depth: 1
+play move start time: 14/9/2022 6:59:39 PM
+play total availabe moves: 20
+play move end time: 14/9/2022 6:59:39 PM
+play move delta time (seconds): 0.0166884
+play move delta time (ticks): 166884
+play move start time: 14/9/2022 7:00:19 PM
+play total availabe moves: 22
+play move end time: 14/9/2022 7:00:19 PM
+play move delta time (seconds): 0.0703576
+play move delta time (ticks): 703576
+play move start time: 14/9/2022 7:01:59 PM
+play total availabe moves: 26
+play move end time: 14/9/2022 7:01:59 PM
+play move delta time (seconds): 0.0337953
+play move delta time (ticks): 337953
+play move start time: 14/9/2022 7:02:43 PM
+play total availabe moves: 18
+play move end time: 14/9/2022 7:02:43 PM
+play move delta time (seconds): 0.0178027
+play move delta time (ticks): 178027

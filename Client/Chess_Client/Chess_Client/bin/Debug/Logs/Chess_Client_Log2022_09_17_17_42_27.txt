@@ -1,0 +1,17 @@
+Start offline game
+Execute player move: g1-h3
+Execute AI move: b8-c6
+Execute player move: d2-d4
+Execute AI move: c6-d4
+Execute player move: e2-e3
+Execute AI move: d4-c2
+Execute player move: d1-c2
+Execute AI move: g8-f6
+Execute player move: e3-e4
+Execute AI move: f6-e4
+Execute player move: c2-e4
+Execute AI move: d7-d5
+Execute player move: f1-b5
+Execute AI move: c8-d7
+Execute player move: e4-a4
+Execute AI move: d7-b5

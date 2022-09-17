@@ -384,17 +384,28 @@ namespace Chess_Client
         }
         public string GetMsgFromBoard()
         {
-            if (this.Connected == false)
-                return null;
-            if(stream == null)
-                stream = boardClient.GetStream();
-            if(sr == null)
-                sr = new StreamReader(stream, System.Text.Encoding.ASCII);
-            string line = sr.ReadLine();
-            //line = sr.ReadLine();
-            //line = sr.ReadLine();
-            //line = sr.ReadLine();
-            line.TrimEnd('\r');
+            bool fail;
+            string line;
+            do
+            {
+                fail = false;
+                if (this.Connected == false)
+                    return null;
+                if (stream == null)
+                    stream = boardClient.GetStream();
+                if (sr == null)
+                    sr = new StreamReader(stream, System.Text.Encoding.ASCII);
+                line = sr.ReadLine();
+                //line = sr.ReadLine();
+                //line = sr.ReadLine();
+                //line = sr.ReadLine();
+                line.TrimEnd('\r');
+                if(line.StartsWith("Error") == true)
+                {
+                    MessageBox.Show(line);
+                    fail = true;
+                }
+            } while (fail == true);
             return line;
         }
         public bool GetBoardAck()
