@@ -1777,7 +1777,7 @@ namespace Chess_Client
             }
             if (white == 0 || (config_File.Testing == true && config_File.Testing_Ai_Vs_Ai == true))
                 OfflineGameHandler(true);
-            else
+            else if (boardClient != null && boardClient.Connected == true)
                 boardClient.StartUserTurn();
         }
 

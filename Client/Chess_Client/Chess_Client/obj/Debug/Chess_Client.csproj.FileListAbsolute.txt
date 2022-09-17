@@ -91,3 +91,21 @@ C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\bin\Debu
 C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\bin\Debug\InTheHand.Net.Bluetooth.dll
 C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\bin\Debug\InTheHand.Net.Bluetooth.xml
 C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.CopyComplete
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\bin\Debug\Chess_Client.exe.config
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\bin\Debug\Chess_Client.exe
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\bin\Debug\Chess_Client.pdb
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\bin\Debug\InTheHand.Net.Bluetooth.dll
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\bin\Debug\InTheHand.Net.Bluetooth.xml
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.AssemblyReference.cache
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.SuggestedBindingRedirects.cache
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.ResolveComReference.cache
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.AIDifficulty.resources
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.AutoChess.resources
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.BoardConnection.resources
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.Properties.Resources.resources
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.Settings.resources
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.GenerateResource.cache
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.CoreCompileInputs.cache
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.CopyComplete
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.exe
+C:\repo\GitHub\AutoChess\AutoChess\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.pdb

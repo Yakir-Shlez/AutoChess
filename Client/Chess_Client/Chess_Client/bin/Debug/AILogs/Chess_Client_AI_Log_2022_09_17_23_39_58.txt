@@ -1,0 +1,96 @@
+depth: 1
+play move start time: 17/9/2022 11:40:00 PM
+play total availabe moves: 20
+play move end time: 17/9/2022 11:40:00 PM
+play move delta time (seconds): 0.0173965
+play move delta time (ticks): 173965
+play move start time: 17/9/2022 11:40:04 PM
+play total availabe moves: 22
+play move end time: 17/9/2022 11:40:04 PM
+play move delta time (seconds): 0.0181795
+play move delta time (ticks): 181795
+play move start time: 17/9/2022 11:40:06 PM
+play total availabe moves: 19
+play move end time: 17/9/2022 11:40:06 PM
+play move delta time (seconds): 0.031646
+play move delta time (ticks): 316460
+play move start time: 17/9/2022 11:40:08 PM
+play total availabe moves: 21
+play move end time: 17/9/2022 11:40:08 PM
+play move delta time (seconds): 0.0493418
+play move delta time (ticks): 493418
+play move start time: 17/9/2022 11:40:10 PM
+play total availabe moves: 26
+play move end time: 17/9/2022 11:40:10 PM
+play move delta time (seconds): 0.0161186
+play move delta time (ticks): 161186
+play move start time: 17/9/2022 11:40:11 PM
+play total availabe moves: 18
+play move end time: 17/9/2022 11:40:11 PM
+play move delta time (seconds): 0.0388945
+play move delta time (ticks): 388945
+play move start time: 17/9/2022 11:40:14 PM
+play total availabe moves: 22
+play move end time: 17/9/2022 11:40:14 PM
+play move delta time (seconds): 0.0127032
+play move delta time (ticks): 127032
+play move start time: 17/9/2022 11:40:16 PM
+play total availabe moves: 22
+play move end time: 17/9/2022 11:40:16 PM
+play move delta time (seconds): 0.0399253
+play move delta time (ticks): 399253
+play move start time: 17/9/2022 11:40:18 PM
+play total availabe moves: 3
+play move end time: 17/9/2022 11:40:18 PM
+play move delta time (seconds): 0.0059803
+play move delta time (ticks): 59803
+play move start time: 17/9/2022 11:40:25 PM
+play total availabe moves: 3
+play move end time: 17/9/2022 11:40:25 PM
+play move delta time (seconds): 0.0029154
+play move delta time (ticks): 29154
+play move start time: 17/9/2022 11:40:42 PM
+play total availabe moves: 29
+play move end time: 17/9/2022 11:40:42 PM
+play move delta time (seconds): 0.0172852
+play move delta time (ticks): 172852
+play move start time: 17/9/2022 11:41:06 PM
+play total availabe moves: 29
+play move end time: 17/9/2022 11:41:06 PM
+play move delta time (seconds): 0.0352051
+play move delta time (ticks): 352051
+play move start time: 17/9/2022 11:41:15 PM
+play total availabe moves: 32
+play move end time: 17/9/2022 11:41:15 PM
+play move delta time (seconds): 0.0189806
+play move delta time (ticks): 189806
+play move start time: 17/9/2022 11:41:19 PM
+play total availabe moves: 25
+play move end time: 17/9/2022 11:41:19 PM
+play move delta time (seconds): 0.0226365
+play move delta time (ticks): 226365
+play move start time: 17/9/2022 11:41:26 PM
+play total availabe moves: 37
+play move end time: 17/9/2022 11:41:26 PM
+play move delta time (seconds): 0.0446885
+play move delta time (ticks): 446885
+play move start time: 17/9/2022 11:41:28 PM
+play total availabe moves: 17
+play move end time: 17/9/2022 11:41:28 PM
+play move delta time (seconds): 0.0111681
+play move delta time (ticks): 111681
+play move start time: 17/9/2022 11:41:34 PM
+play total availabe moves: 24
+play move end time: 17/9/2022 11:41:34 PM
+play move delta time (seconds): 0.0147165
+play move delta time (ticks): 147165
+play move start time: 17/9/2022 11:41:37 PM
+play total availabe moves: 24
+play move end time: 17/9/2022 11:41:37 PM
+play move delta time (seconds): 0.0481586
+play move delta time (ticks): 481586
+play move start time: 17/9/2022 11:41:41 PM
+play total availabe moves: 20
+play move end time: 17/9/2022 11:41:41 PM
+play move delta time (seconds): 0.0273805
+play move delta time (ticks): 273805
