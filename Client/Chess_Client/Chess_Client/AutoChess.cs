@@ -42,14 +42,13 @@ namespace Chess_Client
         ChessAI offlineChessAI;
         public Config config_File;
         bool serverOnline;
+        bool serverConnected = false;
         Random rand;
         AutoChessBoard boardClient;
-        bool moveCandidate;
 
         public AutoChess()
         {
             InitializeComponent();
-            //TBD open DB class
             boardClient = null;
             allPanels = new Panel[allPanelsTabControl.TabPages.Count];
             for(int i= 0; i< allPanelsTabControl.TabPages.Count; i++)
@@ -75,133 +74,13 @@ namespace Chess_Client
 
             HideAllPanels();
             DisplayOnePanel(connectingToServerPanel);
-
-            //TBD
-            /*
-            Player op = new Player("AutoChess AI", "", "", "1", 1500, 300);
-            /*
-            if (serverOnline == false)
-            {
-                myProfile = new Player("My profile", "", "", "2", 1500, 300);
-                UpdateProfileGUI();
-            }
-
-            offlineGame = true;
-            int white;
-
-            white = rand.NextDouble() >= 0.5 ? 1 : 0;
-
-            if (config_File.Testing == true && config_File.Testing_AI && (config_File.Testing_AI_Side == 0 || config_File.Testing_AI_Side == 1))
-                white = config_File.Testing_AI_Side;
-
-            if (config_File.Testing == true && config_File.Testing_Ai_Vs_Ai == true)
-                white = 0;
-
-            AIDifficulty AIDifficultyForm = new AIDifficulty();
-            AIDifficultyForm.ShowDialog();
-            int chessAIDeifficulty = AIDifficultyForm.difficulty;
-            */
-            /*
-            InitGame(op, 1);
-            currentGameBoard.ExecuteGameMove(new Move("g1-h3"));
-            currentGameBoard.ExecuteGameMove(new Move("b8-c6"));
-            currentGameBoard.ExecuteGameMove(new Move("d2-d4"));
-            currentGameBoard.ExecuteGameMove(new Move("c6-d4"));
-            currentGameBoard.ExecuteGameMove(new Move("e2-e3"));
-            currentGameBoard.ExecuteGameMove(new Move("d4-c2"));
-            currentGameBoard.ExecuteGameMove(new Move("d1-c2"));
-            currentGameBoard.ExecuteGameMove(new Move("g8-f6"));
-            currentGameBoard.ExecuteGameMove(new Move("e3-e4"));
-            currentGameBoard.ExecuteGameMove(new Move("f6-e4"));
-            currentGameBoard.ExecuteGameMove(new Move("c2-e4"));
-            currentGameBoard.ExecuteGameMove(new Move("d7-d5"));
-            currentGameBoard.ExecuteGameMove(new Move("f1-b5"));
-            currentGameBoard.ExecuteGameMove(new Move("c8-d7"));
-            currentGameBoard.ExecuteGameMove(new Move("e4-a4"));
-            List<List<Move>> allMovesToSend = PathFindingAlg.GetShortestPath(currentGameBoard.Copy(), new Move("b5-h1"), null, null);
-            //TBD
-            */
+            
             if (config_File.Testing == false || config_File.TestingWithoutServer == false)
                 ConnectServer();
             else
             {
                 ConnectCallback(null);
             }
-            //this.Show();
-            /*
-            Thread.Sleep(1000);
-            if (ConnectServer())
-                myProfile = new Player();
-            else
-            {
-                logInButton.Enabled = false;
-                registerCmd.Enabled = false;
-            }
-            DisplayOnePanel(logInPanel);
-            set = null;
-            offlineGame = false;
-            if (testing)
-            {
-                testingFile = testingLogPath + @"\Chess_Client_Log" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss") + ".txt";
-                File.Create(testingFile).Dispose();
-                AIData.Visible = true;
-
-                if(testingAI)
-                {
-                    testingAIMoves = new List<Move>();
-                    /*
-                    testingAIMoves.Add(new Move("d2-d3"));
-                    testingAIMoves.Add(new Move("b8-c5"));
-                    testingAIMoves.Add(new Move("b7-b6"));
-                    testingAIMoves.Add(new Move("e2-b7"));
-                    testingAIMoves.Add(new Move("h1-h2"));
-                    testingAIMoves.Add(new Move("g1-b4"));
-                    testingAIMoves.Add(new Move("a7-g2"));
-                    testingAIMoves.Add(new Move("b7-g5"));
-                    */
-            //     }
-            // }
-
-
-
-            /*
-            myProfile = new Player("","","");
-            Player op = new Player("", "", "");
-            InitGame(op, 1);
-
-            //enPassantCol = 3;
-
-            int first = currentGameBoard.GetHashCode();
-            currentGameBoard.ExecuteGameMove(new Move("g1-f3"));
-            int second = currentGameBoard.GetHashCode();
-            MessageBox.Show((first == second).ToString() + " " + first.ToString() + " " + second.ToString());
-            currentGameBoard.ExecuteGameMove(new Move("f3-g1"));
-            int third = currentGameBoard.GetHashCode();
-            MessageBox.Show((first == third).ToString() + " " + first.ToString() + " " + third.ToString());
-            /*
-            currentGameBoard.ExecuteGameMove(new Move("g1-f3"));
-
-            currentGameBoard.ExecuteGameMove(new Move("f3-g1"));
-            int third = currentGameBoard.GetHashCode();
-
-            MessageBox.Show((first == third).ToString() + " " + first.ToString() + " " + third.ToString());
-            //currentGameBoard.ExecuteGameMove(new Move("a1-d5"));
-            //currentGameBoard.ExecuteGameMove(new Move("a7-a6"));
-            //currentGameBoard.ExecuteGameMove(new Move("d8-f2"));
-            //ExecuteGameMove("a2-b6");
-            //ExecuteGameMove("a1-d1");
-            //ExecuteGameMove("d2-f4");
-            //ExecuteGameMove("c1-f5");
-            //ExecuteGameMove("c7-b3");
-            //ExecuteGameMove("f8-a5");
-            //ExecuteGameMove("d1-a5");
-            //ExecuteGameMove("b1-a5");
-            //ExecuteGameMove("g1-a5");
-            //ExecuteGameMove("f1-a5");
-            //ExecuteGameMove("c2-c5");
-            //ExecuteGameMove("d7-d5");
-            //ExecuteGameMove("d8-c1");
-            //ExecuteGameMove("f8-b6");*/
 
         }
 
@@ -210,10 +89,7 @@ namespace Chess_Client
         {
             // Establish the remote endpoint for the socket.  
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            //IPAddress ipAddress = IPAddress.Parse("109.66.153.61"); //TBD from file
-            //IPAddress ipAddress = IPAddress.Parse("109.66.153.61");
             IPAddress ipAddress = IPAddress.Parse(config_File.Ip_Address);
-            //IPAddress ipAddress = Dns.GetHostEntry("localhost").AddressList[0];
 
 
             IPEndPoint remoteEP = new IPEndPoint(ipAddress, 3333);
@@ -241,7 +117,7 @@ namespace Chess_Client
             if (config_File.Testing == true)
                 using (StreamWriter writer = new StreamWriter(testingFile, true))
                 {
-                    writer.WriteLine(DateTime.Now.ToString("HH:mm:ss ") + "send: " + msgToServer);
+                    writer.WriteLine(DateTime.Now.ToString("HH:mm:ss ") + "server send: " + msgToServer);
                 }
 
             return bytesSent;
@@ -359,7 +235,7 @@ namespace Chess_Client
             if (config_File.Testing == true)
                 using (StreamWriter writer = new StreamWriter(testingFile, true))
                 {
-                    writer.WriteLine(DateTime.Now.ToString("HH:mm:ss ") + "recv: " + Encoding.ASCII.GetString(bytes, 0, bytesRec));
+                    writer.WriteLine(DateTime.Now.ToString("HH:mm:ss ") + "server recv: " + Encoding.ASCII.GetString(bytes, 0, bytesRec));
                 }
             EnableDisableInviteTime(savedState);
             string returnString = recvLine + Encoding.ASCII.GetString(bytes, 0, bytesRec);
@@ -578,7 +454,6 @@ namespace Chess_Client
             if (currentMove.sourceRowIndex == -1 && currentMove.sourceColIndex == -1)
             {
                 currentMove = new Move();
-                moveCandidate = false;
                 currentGameBoard.PrintBoardPattern(currentMove);
                 //get move source square and highlight possible moves
                 allSquaresPanels[currentGameBoard.FlipRowIndex(rowIndex), currentGameBoard.FlipColIndex(colIndex)].BackColor = Color.Silver; //direct print - need to flip again
@@ -590,7 +465,6 @@ namespace Chess_Client
             {
                 //user selected the source cell
                 currentMove = new Move();
-                moveCandidate = false;
                 currentGameBoard.PrintBoardPattern(currentMove);
                 return;
             }
@@ -640,7 +514,7 @@ namespace Chess_Client
                     }
                 currentGameBoard.ExecuteGameMove(currentMove);
 
-                await Task.Run(() => Thread.Sleep(100));
+                await Task.Run(() => Thread.Sleep(50));
 
                 if ((currentGameBoard.myColor == PieceColor.White && currentMove.destRowIndex == 7
                     && currentGameBoard.board[currentMove.destRowIndex, currentMove.destColIndex].type == PieceType.Pawn) ||
@@ -655,7 +529,6 @@ namespace Chess_Client
             }
 
             currentMove = new Move();
-            moveCandidate = false;
             bool found = false;
             found = CheckAvailableMove(currentGameBoard.opColor);
 
@@ -670,7 +543,7 @@ namespace Chess_Client
                 currentGameBoard = null;
                 offlineGame = false;
                 gameTimer.Enabled = false;
-                if (serverOnline == true)
+                if (serverConnected == true)
                     DisplayMainMenu(false);
                 else
                     DisplayOnePanel(logInPanel);
@@ -689,22 +562,12 @@ namespace Chess_Client
                 currentGameBoard = null;
                 offlineGame = false;
                 gameTimer.Enabled = false;
-                if (serverOnline == true)
+                if (serverConnected == true)
                     DisplayMainMenu(false);
                 else
                     DisplayOnePanel(logInPanel);
                 return;
             }
-
-            ChessBoard tempBoard = currentGameBoard.Copy();
-            currentGameBoard.ExecuteGameMove(AIMove);
-            await Task.Run(() => Thread.Sleep(100));
-
-            if (boardClient != null && boardClient.Connected == true)
-            {
-                boardClient.SendBoardMove(AIMove, tempBoard);
-            }
-            
 
             if (config_File.Testing == true)
                 using (StreamWriter writer = new StreamWriter(testingFile, true))
@@ -712,6 +575,15 @@ namespace Chess_Client
                     writer.WriteLine("Execute AI move: " + AIMove.ToString());
                 }
 
+            ChessBoard tempBoard = currentGameBoard.Copy();
+            currentGameBoard.ExecuteGameMove(AIMove);
+            await Task.Run(() => Thread.Sleep(50));
+
+            if (boardClient != null && boardClient.Connected == true)
+            {
+                boardClient.SendBoardMove(AIMove, tempBoard);
+            }
+            
             if ((currentGameBoard.opColor == PieceColor.White && AIMove.destRowIndex == 7
                 && currentGameBoard.board[AIMove.destRowIndex, AIMove.destColIndex].type == PieceType.Pawn) ||
                 (currentGameBoard.opColor == PieceColor.Black && AIMove.destRowIndex == 0
@@ -742,7 +614,7 @@ namespace Chess_Client
                 currentGameBoard = null;
                 offlineGame = false;
                 gameTimer.Enabled = false;
-                if (serverOnline == true)
+                if (serverConnected == true)
                     DisplayMainMenu(false);
                 else
                     DisplayOnePanel(logInPanel);
@@ -757,12 +629,20 @@ namespace Chess_Client
                     return;
                 }
 
-                currentGameBoard.ExecuteGameMove(secAIMove);
                 if (config_File.Testing == true)
                     using (StreamWriter writer = new StreamWriter(testingFile, true))
                     {
-                        writer.WriteLine("Execute second AI move: " + secAIMove.ToString());
+                        writer.WriteLine(DateTime.Now.ToString("HH:mm:ss ") + "Execute second AI move: " + secAIMove.ToString());
                     }
+                
+                tempBoard = currentGameBoard.Copy();
+                currentGameBoard.ExecuteGameMove(secAIMove);
+                await Task.Run(() => Thread.Sleep(50));
+
+                if (boardClient != null && boardClient.Connected == true)
+                {
+                    boardClient.SendBoardMove(secAIMove, tempBoard);
+                }
 
                 if ((currentGameBoard.myColor == PieceColor.White && secAIMove.destRowIndex == 7
                     && currentGameBoard.board[secAIMove.destRowIndex, secAIMove.destColIndex].type == PieceType.Pawn) ||
@@ -778,8 +658,7 @@ namespace Chess_Client
                 }
                 OfflineGameHandler(true);
             }
-
-            if (boardClient != null && boardClient.Connected == true)
+            else if (boardClient != null && boardClient.Connected == true)
             {
                 boardClient.StartUserTurn();
             }
@@ -825,6 +704,7 @@ namespace Chess_Client
             if(responce == "Ack__")
             {
                 await Task.Run(() => RecvServerPlayer());
+                serverConnected = true;
                 DisplayMainMenu(false);
             }
             else
@@ -897,6 +777,12 @@ namespace Chess_Client
 
                 offlineGame = false;
                 InitGame(op, white);
+                if (boardClient != null && boardClient.Connected == true)
+                {
+                    MessageBox.Show("You are " + (white == 1 ? "White" : "Black") + ", please arrange board accourdingly.");
+                    if (white == 1)
+                        boardClient.StartUserTurn();
+                }
             }
         }
 
@@ -939,7 +825,6 @@ namespace Chess_Client
 
             DisplayGame();
             currentMove = new Move();
-            moveCandidate = false;
             gameTimer.Enabled = true;
             drawOffer = false;
             gameOpMoveRec = false;
@@ -949,7 +834,10 @@ namespace Chess_Client
             if (boardClient != null && boardClient.Connected == true)
             {
                 boardClient.GameInit(currentGameBoard.Copy());
+                currentGameBoard.boardGame = true;
             }
+            else
+                currentGameBoard.boardGame = false;
         }
 
         private void cancelSearch_Click(object sender, EventArgs e)
@@ -1252,13 +1140,10 @@ namespace Chess_Client
                            MessageBox.Show("square " + line[3].ToString() + line[4].ToString() + " magically appear, ignoring...");
                         return;
                     }
-                    //if (currentMove.sourceRowIndex == -1 && currentMove.sourceColIndex == -1 && currentGameBoard.board[square.rowIndex, square.colIndex].color != currentGameBoard.myColor)
-                    //    return; TBD
                     if (currentMove.sourceRowIndex == -1 && currentMove.sourceColIndex == -1 && appear == false
                         && currentGameBoard.board[square.rowIndex, square.colIndex].color == currentGameBoard.myColor)
                     {
                         currentMove = new Move();
-                        moveCandidate = false;
                         currentGameBoard.PrintBoardPattern(currentMove);
                         //get move source square and highlight possible moves
                         allSquaresPanels[currentGameBoard.FlipRowIndex(square.rowIndex), currentGameBoard.FlipColIndex(square.colIndex)].BackColor = Color.Silver; //direct print - need to flip again
@@ -1269,7 +1154,6 @@ namespace Chess_Client
                     else if (currentMove.sourceRowIndex == square.rowIndex && currentMove.sourceColIndex == square.colIndex && appear == true)
                     {
                         currentMove = new Move();
-                        moveCandidate = false;
                         currentGameBoard.PrintBoardPattern(currentMove);
                     }
                     else if (allSquaresPanels[currentGameBoard.FlipRowIndex(square.rowIndex), currentGameBoard.FlipColIndex(square.colIndex)].BackColor == Color.PaleGreen 
@@ -1344,7 +1228,6 @@ namespace Chess_Client
                         {
                             MessageBox.Show("Opponent denied the draw request, Fight!");
                             currentMove = new Move();
-                            moveCandidate = false;
                             currentGameBoard.PrintBoardPattern(currentMove);
                             currentGameBoard.currentTurn = GameState.MyTurn;
                             drawBu.Enabled = true;
@@ -1399,7 +1282,6 @@ namespace Chess_Client
                             promotionFlagWait = false;
                         }
                         currentMove = new Move();
-                        moveCandidate = false;
                         currentGameBoard.currentTurn = GameState.OpTurn;
                         drawBu.Enabled = false;
                     }
@@ -1407,7 +1289,6 @@ namespace Chess_Client
                     {
                         MessageBox.Show("Move denied");
                         currentMove = new Move();
-                        moveCandidate = false;
                         currentGameBoard.PrintBoardPattern(currentMove);
                         currentGameBoard.currentTurn = GameState.MyTurn;
                         drawBu.Enabled = true;
@@ -1448,7 +1329,6 @@ namespace Chess_Client
                         {
                             SendServer("No___");
                             currentMove = new Move();
-                            moveCandidate = false;
                             currentGameBoard.PrintBoardPattern(currentMove);
                             currentGameBoard.currentTurn = GameState.OpTurn;
                             drawBu.Enabled = false;
@@ -1501,7 +1381,7 @@ namespace Chess_Client
                     {
                         ChessBoard tempBoard = currentGameBoard.Copy();
                         currentGameBoard.ExecuteGameMove(new Move(exactLine));
-                        await Task.Run(() => Thread.Sleep(100));
+                        await Task.Run(() => Thread.Sleep(50));
 
                         if (boardClient != null && boardClient.Connected == true)
                         {
@@ -1509,8 +1389,9 @@ namespace Chess_Client
                         }
                         
                         currentMove = new Move();
-                        moveCandidate = false;
                         gameOpMoveRec = true;
+                        if (boardClient != null && boardClient.Connected == true)
+                            boardClient.StartUserTurn();
                     }
                 }
             }
@@ -1528,7 +1409,6 @@ namespace Chess_Client
             if (currentGameBoard.currentTurn == GameState.MyTurn)
             {
                 currentMove = new Move();
-                moveCandidate = false;
                 currentGameBoard.PrintBoardPattern(currentMove);
                 currentGameBoard.currentTurn = GameState.OpTurn;
                 drawBu.Enabled = false;
@@ -1553,7 +1433,7 @@ namespace Chess_Client
                 currentGameBoard = null;
                 offlineGame = false;
                 gameTimer.Enabled = false;
-                if (serverOnline == true)
+                if (serverConnected == true)
                     DisplayMainMenu(false);
                 else
                     DisplayOnePanel(logInPanel);
@@ -1726,7 +1606,7 @@ namespace Chess_Client
         private void playOffline_Click(object sender, EventArgs e)
         {
             Player op = new Player("AutoChess AI", "", "", "1", 1500, 300);
-            if(serverOnline == false)
+            if(serverConnected == false)
             {
                 myProfile = new Player("My profile", "", "", "2", 1500, 300);
                 UpdateProfileGUI();
@@ -1777,7 +1657,7 @@ namespace Chess_Client
             }
             if (white == 0 || (config_File.Testing == true && config_File.Testing_Ai_Vs_Ai == true))
                 OfflineGameHandler(true);
-            else if (boardClient != null && boardClient.Connected == true)
+            else if(boardClient!= null && boardClient.Connected == true)
                 boardClient.StartUserTurn();
         }
 
@@ -1785,7 +1665,7 @@ namespace Chess_Client
         {
             if (boardClient == null || boardClient.Connected == false)
             {
-                boardClient = new AutoChessBoard();
+                boardClient = new AutoChessBoard(config_File, testingFile);
                 if (boardClient.Connected == true)
                 {
                     boardConnectLogInBtn.BackColor = Color.LimeGreen;
@@ -1806,6 +1686,11 @@ namespace Chess_Client
                 boardClient.CloseBoard();
                 boardClient = null;
             }
+        }
+
+        private void boardConnectMainMenuBtn_Click(object sender, EventArgs e)
+        {
+            boardConnectLogInBtn_Click(null, null);
         }
     }
 }

@@ -60,26 +60,11 @@ namespace Chess_Client
                     writer.WriteLine("play move start time: " + startTime.ToString());
                 }
             }
-            /*
-            for(int i = 0;i < allreadySeenBoards.Count; i++)
-            {
-                if(allreadySeenBoards[i].numberOfPieces > currentGameBoard.numberOfPieces)
-                {
-                    allreadySeenBoards.Remove(allreadySeenBoards[i]);
-                    i--;
-                }
-            }*/
             int bestScore;
             Move bestMove;
             Move forbiddenMove = new Move();
             if (PreviousMoves.Count == 2)
                 forbiddenMove = PreviousMoves[0];
-            //TBD start
-            //if (PreviousMoves.Count == 2 && PreviousMoves[0].ToString() == "b4-c4" && PreviousMoves[1].ToString() == "c4-b4")
-            //{
-            //    bool found = true;
-            //}
-            //TBD end
             AINode AIBrain;
             bestMove = minimax(currentGameBoard.Copy(), 1, int.MinValue, int.MaxValue, AIColor, forbiddenMove, out bestScore, out AIBrain);
 
@@ -103,72 +88,8 @@ namespace Chess_Client
         }
         private Move minimax(ChessBoard board, int depth, int alpha, int beta, PieceColor color, Move forbiddenMove, out int bestScore, out AINode currentNode)
         {
-
-            //TBD debugging start
-            ///*
-            /*
-            if (depth == 6 && board.board[0, 4].type == PieceType.King && board.board[0, 3].type == PieceType.Queen && board.board[0, 3].color == PieceColor.Black &&
-                (board.board[0, 2].color == PieceColor.Black || board.board[0, 2].color == PieceColor.Null))
-            {
-                bool found = true;
-            }
-            //*/
-            //TBD debugging end
-            //TBD debugging start
-            ///*
-            /*
-            int wkingRowIndex = -1;
-            int wkingColIndex = -1;
-            int bkingRowIndex = -1;
-            int bkingColIndex = -1;
-
-            for (int i = color == PieceColor.White ? 0 : 7
-                ; color == PieceColor.White ? i < 8 : i > -1
-                ; i += color == PieceColor.White ? 1 : -1)
-                for (int j = 0; j < 8; j++)
-                {
-                    if (board.board[i, j].type == PieceType.King)
-                    {
-                        if (board.board[i, j].color == PieceColor.White)
-                        {
-                            wkingRowIndex = i;
-                            wkingColIndex = j;
-                        }
-                        else
-                        {
-                            bkingRowIndex = i;
-                            bkingColIndex = j;
-                        }
-                        break;
-                    }
-                }
-            if (wkingRowIndex == -1 || bkingRowIndex == -1)
-                throw new Exception();
-
-            /*
-            if (depth == 5 && copy.board[6, 5].type == PieceType.King && copy.board[4, 6].type == PieceType.Knight)
-            {
-                bool found = true;
-            }
-            //*/
-            //TBD debugging end
             currentNode = new AINode(depth);
             List<Move> allPossibleMoves;
-            /*
-            CheckedBoard prevBoard = null;
-            int hashCode = board.GetHashCode();
-
-            foreach (CheckedBoard testBoard in allreadySeenBoards)
-            {
-                if (testBoard.hashCode == hashCode)
-                {
-                    prevBoard = testBoard;
-                    break;
-                }
-            }
-            */
-            //if (prevBoard == null)
-            //{
 
             bool checkChess = board.CheckChess(-1, -1, out int temp1, out int temp2, color);
 
@@ -181,19 +102,6 @@ namespace Chess_Client
                         board.GetAllPossibleMoves(i, j, checkChess, color, allPossibleMoves);
                     }
 
-
-            //allreadySeenBoards.Add(new CheckedBoard(hashCode, allPossibleMoves, board.numberOfPieces, board.CopyForTesting()));
-            //}
-            //else
-            //allPossibleMoves = prevBoard.allMoves;
-            //if (prevBoard != null)
-            //{
-            //  bool found = true;
-            //}
-
-            //allPossibleMoves.
-            //TBD testing start
-            ///*
             if (testing == true && depth == 1)
             {
                 using (StreamWriter writer = new StreamWriter(testingFile, true))
@@ -201,9 +109,6 @@ namespace Chess_Client
                     writer.WriteLine("play total availabe moves: " + allPossibleMoves.Count.ToString());
                 }
             }
-            //*/
-            //TBD testing end
-
 
             bool max;
             if (color == currentGameBoard.opColor)
@@ -228,29 +133,9 @@ namespace Chess_Client
 
             foreach (Move move in allPossibleMoves)
             {
-                //TBD testing start
-                ///*
                 if (testing == true && depth == 1 && GUI != null)
                     GUI.UpdateAiProgress(allPossibleMoves.IndexOf(move).ToString() + "/" + allPossibleMoves.Count.ToString());
-                //*/
-                //TBD testing end
 
-                //TBD debugging start
-                /*
-                if (move.ToString()[3] == 'd' && move.ToString()[4] == '3' && depth == 4 && board.board[move.sourceRowIndex, move.sourceColIndex].type == PieceType.King)
-                {
-                    bool found = true;
-                }   
-                if (depth == 6 && move.ToString() == "e1-c1" && board.board[0, 4].type == PieceType.King && allPossibleMoves.Count == 32 && bestScore == -1195 && bestMove.ToString() == "a4-c6")
-                {
-                    bool found = true;
-                }
-                if(move.ToString()[0] == 'a' && move.ToString()[0] == '1')
-                {
-                    bool found = true;
-                }
-                //*/
-                //TBD debugging end
                 if (checkChess == false && board.CheckChessHypothetical(move, color) == true)
                     continue;
                 if (move.sourceRowIndex == forbiddenMove.sourceRowIndex &&
@@ -288,62 +173,9 @@ namespace Chess_Client
                     currentNode.allPossibleNodes.Add(sonNode);
                 }
 
-                //TBD debugging start
-                /*        
-                if (depth == 6 && copy.board[0, 2].type == PieceType.King && copy.board[0, 3].type == PieceType.Queen && copy.board[0, 3].color == PieceColor.Black)
-                {
-                    bool found = true;
-                }
-                wkingRowIndex = -1;
-                wkingColIndex = -1;
-                bkingRowIndex = -1;
-                bkingColIndex = -1;
-                
-                for (int i = color == PieceColor.White ? 0 : 7
-                    ; color == PieceColor.White ? i < 8 : i > -1
-                    ; i += color == PieceColor.White ? 1 : -1)
-                    for (int j = 0; j < 8; j++)
-                    {
-                        if (copy.board[i, j].type == PieceType.King)
-                        {
-                            if (copy.board[i, j].color == PieceColor.White)
-                            {
-                                wkingRowIndex = i;
-                                wkingColIndex = j;
-                            }
-                            else
-                            {
-                                bkingRowIndex = i;
-                                bkingColIndex = j;
-                            }
-                            break;
-                        }
-                    }
-                if (wkingRowIndex == -1 || bkingRowIndex == -1)
-                    throw new Exception();
-
-                if (depth == 5 && copy.board[6, 5].type == PieceType.King && copy.board[4, 6].type == PieceType.Knight)
-                {
-                    bool found = true;
-                }
-                //*/
-                //TBD debugging end
-
-                //TBD debugging start
-                /*
-                if (move.ToString() == "g2-g1")
-                {
-                    bool found = true;
-                }
-                if (move.ToString() == "g2-f1")
-                {
-                    bool found = true;
-                }
-                //*/
-                //TBD debugging end
                 if (max == true)
                 {
-                    if (currentScore > bestScore) //TBD
+                    if (currentScore > bestScore) 
                     {
                         bestMove = move;
                         bestScore = currentScore;
@@ -356,7 +188,7 @@ namespace Chess_Client
                 }
                 else
                 {
-                    if (currentScore < bestScore) //TBD
+                    if (currentScore < bestScore)
                     {
                         bestMove = move;
                         bestScore = currentScore;

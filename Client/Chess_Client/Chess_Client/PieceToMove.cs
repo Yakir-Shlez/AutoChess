@@ -48,5 +48,10 @@ namespace Chess_Client
         {
             return ((char)(colIndex + (int)'a') + (rowIndex + 1).ToString());
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

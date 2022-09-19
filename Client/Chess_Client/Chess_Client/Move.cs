@@ -72,5 +72,10 @@ namespace Chess_Client
         {
             return ((char)(sourceColIndex + (int)'a') + (sourceRowIndex + 1).ToString() + "-" + (char)(destColIndex + (int)'a') + (destRowIndex + 1).ToString());
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

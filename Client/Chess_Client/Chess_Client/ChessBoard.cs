@@ -32,6 +32,7 @@ namespace Chess_Client
         public Label scoreLabel;
         public int totalBoardScore;
         public int numberOfPieces;
+        public bool boardGame = false;
 
         private ChessBoard()
         { }
@@ -64,7 +65,7 @@ namespace Chess_Client
                     , new Piece(PieceType.Knight, opColor), new Piece(PieceType.Pawn, opColor)};
 
             Piece[] whitePieces;
-            Piece[] blackPieces; // TBD matybe takw it outside
+            Piece[] blackPieces;
             if (myColor == PieceColor.White)
             {
                 whitePieces = myPieces;
@@ -85,9 +86,8 @@ namespace Chess_Client
 
             board = new Piece[8, 8];
             nullPiece = new Piece();
-            //TBD weights
             board[0, 0] = whitePieces[(int)PieceType.Rook];
-            board[0, 7] = whitePieces[(int)PieceType.Rook];// TBD maybe seperate to 2 diffrent pieces? (relevant for all the followig pieces too)
+            board[0, 7] = whitePieces[(int)PieceType.Rook];
             board[0, 1] = whitePieces[(int)PieceType.Knight];
             board[0, 6] = whitePieces[(int)PieceType.Knight];
             board[0, 2] = whitePieces[(int)PieceType.Bishop];
@@ -97,7 +97,7 @@ namespace Chess_Client
             for (int i = 0; i < 8; i++)
                 board[1, i] = whitePieces[(int)PieceType.Pawn];
 
-            board[7, 0] = blackPieces[(int)PieceType.Rook]; // TBD maybe seperate to 2 diffrent pieces? (relevant for all the followig pieces too)
+            board[7, 0] = blackPieces[(int)PieceType.Rook]; 
             board[7, 7] = blackPieces[(int)PieceType.Rook];
             board[7, 1] = blackPieces[(int)PieceType.Knight];
             board[7, 6] = blackPieces[(int)PieceType.Knight];
@@ -127,7 +127,6 @@ namespace Chess_Client
                 currentTurn = GameState.MyTurn;
         }
         #endregion
-
         #region Game Functions
         public void ExecuteGameMove(Move move)
         {
@@ -433,7 +432,7 @@ namespace Chess_Client
                     rowOffset = piece.rowPattern[j] * i;
                     colOffset = piece.colPattern[j] * i;
                     if (sourceRow + rowOffset < 0 || sourceRow + rowOffset > 7 ||
-                        sourceCol + colOffset < 0 || sourceCol + colOffset > 7) break; // TBD move up
+                        sourceCol + colOffset < 0 || sourceCol + colOffset > 7) break; 
                     move = new Move(sourceRow, sourceCol, sourceRow + rowOffset, sourceCol + colOffset);
                     move.destWeight = board[move.destRowIndex, move.destColIndex].calculateTotalScore(move.destRowIndex, move.destColIndex, color);
                     capture = false;
@@ -481,23 +480,16 @@ namespace Chess_Client
             Piece firstPiece;
             Piece secPiece;
             bool returnFlag = false;
-            //int kingRowIndex = -1;
-            //int kingColIndex = -1;
 
-            /*TBD
-            if (destRowIndex == -1 || destColIndex == -1)
-            {*/
             firstPiece = board[sourceRowIndex, sourceColIndex];
             board[sourceRowIndex, sourceColIndex] = nullPiece;
             secPiece = board[destRowIndex, destColIndex];
             board[destRowIndex, destColIndex] = firstPiece;
-            //}
 
             returnFlag = CheckChess(kingRowIndex, kingColIndex, color);
 
             board[sourceRowIndex, sourceColIndex] = firstPiece;
-            /*TBD
-            if (!(destRowOffset == 0 && destColOffset == 0))*/
+
             board[destRowIndex, destColIndex] = secPiece;
             return returnFlag;
         }
@@ -649,7 +641,7 @@ namespace Chess_Client
                 return true;
             if (kingRowIndex + 2 < 8 && kingColIndex + 1 < 8 &&
                 board[kingRowIndex + 2, kingColIndex + 1].color != color &&
-                board[kingRowIndex + 2, kingColIndex + 1].type == PieceType.Knight) //TBD
+                board[kingRowIndex + 2, kingColIndex + 1].type == PieceType.Knight) 
                 return true;
             if (kingRowIndex + 2 < 8 && kingColIndex - 1 > -1 &&
                 board[kingRowIndex + 2, kingColIndex - 1].color != color &&
@@ -728,7 +720,6 @@ namespace Chess_Client
             return totalBoardScore;
         }
         #endregion
-
         #region GUI Functions
         public void HighlightPossibleMoves(int rowIndex, int colIndex)
         {
@@ -787,7 +778,7 @@ namespace Chess_Client
         {
             bool flipVertical;
 
-            if (myColor == PieceColor.White)
+            if (myColor == PieceColor.White && boardGame != false)
                 flipVertical = true;
             else
                 flipVertical = false;
@@ -798,7 +789,7 @@ namespace Chess_Client
         {
             bool flipHorizontal;
 
-            if (myColor == PieceColor.White)
+            if (myColor == PieceColor.White && boardGame != false)
                 flipHorizontal = false;
             else
                 flipHorizontal = true;
@@ -831,6 +822,7 @@ namespace Chess_Client
             copy.blackShortCastleFlag = blackShortCastleFlag;
             copy.blackLongCastleFlag = blackLongCastleFlag;
             copy.totalBoardScore = totalBoardScore;
+            copy.currentTurn = currentTurn;
             return copy;
         }
         public static PieceColor GetOpColor(PieceColor color)

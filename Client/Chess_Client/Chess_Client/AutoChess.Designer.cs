@@ -191,6 +191,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.U1L0 = new System.Windows.Forms.PictureBox();
             this.logInPanel = new System.Windows.Forms.Panel();
+            this.boardConnectLogInBtn = new System.Windows.Forms.Button();
             this.playRealOffline = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.registerCmd = new System.Windows.Forms.Button();
@@ -216,6 +217,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.mainMenuPanel = new System.Windows.Forms.Panel();
+            this.boardConnectMainMenuBtn = new System.Windows.Forms.Button();
             this.playOffline = new System.Windows.Forms.Button();
             this.settings = new System.Windows.Forms.Button();
             this.PlayFreind = new System.Windows.Forms.Button();
@@ -273,8 +275,6 @@
             this.connectingToServerPanel = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
             this.inviteTimer = new System.Windows.Forms.Timer(this.components);
-            this.boardConnectLogInBtn = new System.Windows.Forms.Button();
-            this.boardConnectMainMenuBtn = new System.Windows.Forms.Button();
             this.chessGamePanel.SuspendLayout();
             this.panel58.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.U7L7)).BeginInit();
@@ -2239,6 +2239,18 @@
             this.logInPanel.TabIndex = 3;
             this.logInPanel.Visible = false;
             // 
+            // boardConnectLogInBtn
+            // 
+            this.boardConnectLogInBtn.BackColor = System.Drawing.Color.Salmon;
+            this.boardConnectLogInBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.boardConnectLogInBtn.Location = new System.Drawing.Point(349, 8);
+            this.boardConnectLogInBtn.Name = "boardConnectLogInBtn";
+            this.boardConnectLogInBtn.Size = new System.Drawing.Size(84, 32);
+            this.boardConnectLogInBtn.TabIndex = 9;
+            this.boardConnectLogInBtn.Text = "board";
+            this.boardConnectLogInBtn.UseVisualStyleBackColor = false;
+            this.boardConnectLogInBtn.Click += new System.EventHandler(this.boardConnectLogInBtn_Click);
+            // 
             // playRealOffline
             // 
             this.playRealOffline.Location = new System.Drawing.Point(29, 388);
@@ -2478,6 +2490,18 @@
             this.mainMenuPanel.Size = new System.Drawing.Size(750, 772);
             this.mainMenuPanel.TabIndex = 6;
             this.mainMenuPanel.Visible = false;
+            // 
+            // boardConnectMainMenuBtn
+            // 
+            this.boardConnectMainMenuBtn.BackColor = System.Drawing.Color.Salmon;
+            this.boardConnectMainMenuBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.boardConnectMainMenuBtn.Location = new System.Drawing.Point(661, 4);
+            this.boardConnectMainMenuBtn.Name = "boardConnectMainMenuBtn";
+            this.boardConnectMainMenuBtn.Size = new System.Drawing.Size(84, 32);
+            this.boardConnectMainMenuBtn.TabIndex = 13;
+            this.boardConnectMainMenuBtn.Text = "board";
+            this.boardConnectMainMenuBtn.UseVisualStyleBackColor = false;
+            this.boardConnectMainMenuBtn.Click += new System.EventHandler(this.boardConnectMainMenuBtn_Click);
             // 
             // playOffline
             // 
@@ -3061,29 +3085,6 @@
             // inviteTimer
             // 
             this.inviteTimer.Tick += new System.EventHandler(this.inviteTimer_Tick);
-            // 
-            // boardConnectLogInBtn
-            // 
-            this.boardConnectLogInBtn.BackColor = System.Drawing.Color.Salmon;
-            this.boardConnectLogInBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.boardConnectLogInBtn.Location = new System.Drawing.Point(349, 8);
-            this.boardConnectLogInBtn.Name = "boardConnectLogInBtn";
-            this.boardConnectLogInBtn.Size = new System.Drawing.Size(84, 32);
-            this.boardConnectLogInBtn.TabIndex = 9;
-            this.boardConnectLogInBtn.Text = "board";
-            this.boardConnectLogInBtn.UseVisualStyleBackColor = false;
-            this.boardConnectLogInBtn.Click += new System.EventHandler(this.boardConnectLogInBtn_Click);
-            // 
-            // boardConnectMainMenuBtn
-            // 
-            this.boardConnectMainMenuBtn.BackColor = System.Drawing.Color.Salmon;
-            this.boardConnectMainMenuBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.boardConnectMainMenuBtn.Location = new System.Drawing.Point(661, 4);
-            this.boardConnectMainMenuBtn.Name = "boardConnectMainMenuBtn";
-            this.boardConnectMainMenuBtn.Size = new System.Drawing.Size(84, 32);
-            this.boardConnectMainMenuBtn.TabIndex = 13;
-            this.boardConnectMainMenuBtn.Text = "board";
-            this.boardConnectMainMenuBtn.UseVisualStyleBackColor = false;
             // 
             // AutoChess
             // 

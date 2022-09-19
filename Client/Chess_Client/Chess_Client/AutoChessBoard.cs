@@ -18,14 +18,18 @@ namespace Chess_Client
         StreamReader sr = null;
         public BluetoothClient boardClient;
         public bool waitForUserTurn = false;
+        public Config config_File;
+        public string testingFile;
         public bool Connected
         {
             get { return boardClient != null && boardClient.Connected; }
         }
-        public AutoChessBoard()
+        public AutoChessBoard(Config config_File, string testingFile)
         {
             this.waitForUserTurn = false;
             this.boardClient = null;
+            this.config_File = config_File;
+            this.testingFile = testingFile;
             boardClient = new BluetoothClient();
             BoardConnection boardConn = new BoardConnection(boardClient);
             boardConn.ShowDialog();
@@ -69,7 +73,6 @@ namespace Chess_Client
                     if (SendToBoard(flippedMove.ToString(), true) == false)
                     {
                         MessageBox.Show("Board rejected move");
-                        //TBD denied
                     }
                 }
             }
@@ -82,7 +85,6 @@ namespace Chess_Client
                 if (SendToBoard(flippedMove.ToString(), true) == false)
                 {
                     MessageBox.Show("Board rejected move");
-                    //TBD denied
                 }
             }
 
@@ -94,7 +96,6 @@ namespace Chess_Client
                     if (SendToBoard(flippedMove.ToString(), true) == false)
                     {
                         MessageBox.Show("Board rejected move");
-                        //TBD denied
                     }
                 }
             }
@@ -178,7 +179,7 @@ namespace Chess_Client
         {
             bool fail = false;
             string line = "";
-            InitBuffers();
+            InitBuffer();
             do
             {
                 ChessBoard tempBoard = currentGameBoard.Copy();
@@ -198,7 +199,7 @@ namespace Chess_Client
                         MessageBox.Show(line + " sqaure should be empty, there is a piece there!");
                         fail = true;
                     }
-                    tempBoard.board[(int)line[1] - '1', (int)line[0] - 'a'] = new Piece();
+                    tempBoard.board[sqaure.rowIndex, sqaure.colIndex] = new Piece();
                     line = GetMsgFromBoard();
                 }
                 for(int i = 0; i < 8; i++)
@@ -218,7 +219,7 @@ namespace Chess_Client
         }
         #endregion
         #region Buffer Functions
-        public void InitBuffers()
+        public void InitBuffer()
         {
             userBuf = new Piece[8, 2];
             opBuf = new Piece[8, 2];
@@ -235,10 +236,12 @@ namespace Chess_Client
         {
             Move bufMove = new Move();
             bool found = true;
-            if(currentGameBoard.board[move.destRowIndex, move.destColIndex].color == currentGameBoard.myColor)
+            bufMove.sourceColIndex = currentGameBoard.currentTurn == GameState.OpTurn ? 
+                (currentGameBoard.myColor == PieceColor.White ? 7 : 0) :
+                (currentGameBoard.myColor == PieceColor.White ? 0 : 7);
+            found = false;
+            if (currentGameBoard.currentTurn == GameState.OpTurn)
             {
-                bufMove.sourceColIndex = 7;
-                found = false;
                 for (int j = 0; j == 0 || (j == 1 && found == true); j++)
                 {
                     for (int i = 0; i < 8; i++)
@@ -246,7 +249,7 @@ namespace Chess_Client
                         if (userBuf[i, 1].type == PieceType.Null)
                         {
                             found = true;
-                            if (currentGameBoard.board[i, 7].type != PieceType.Null && j == 0)
+                            if (currentGameBoard.board[i, bufMove.sourceColIndex].type != PieceType.Null && j == 0)
                                 continue;
                             bufMove.sourceRowIndex = i;
                             bufMove.destRowIndex = 1;
@@ -264,7 +267,7 @@ namespace Chess_Client
                         if (userBuf[i, 0].type == PieceType.Null)
                         {
                             found = true;
-                            if (currentGameBoard.board[i, 7].type != PieceType.Null && j == 0)
+                            if (currentGameBoard.board[i, bufMove.sourceColIndex].type != PieceType.Null && j == 0)
                                 continue;
                             bufMove.sourceRowIndex = i;
                             bufMove.destRowIndex = 0;
@@ -277,8 +280,6 @@ namespace Chess_Client
             }
             else
             {
-                bufMove.sourceColIndex = 0;
-                found = false;
                 for (int j = 0; j == 0 || (j == 1 && found == true); j++)
                 {
                     for (int i = 0; i < 8; i++)
@@ -286,12 +287,12 @@ namespace Chess_Client
                         if (opBuf[i, 1].type == PieceType.Null)
                         {
                             found = true;
-                            if (currentGameBoard.board[i, 0].type != PieceType.Null && j == 0)
+                            if (currentGameBoard.board[i, bufMove.sourceColIndex].type != PieceType.Null && j == 0)
                                 continue;
                             bufMove.sourceRowIndex = i;
                             bufMove.destRowIndex = 1;
                             bufMove.destColIndex = (int)('o') - (int)('a');
-                            userBuf[i, 1] = currentGameBoard.board[move.destRowIndex, move.destColIndex];
+                            opBuf[i, 1] = currentGameBoard.board[move.destRowIndex, move.destColIndex];
                             return bufMove;
                         }
                     }
@@ -304,17 +305,17 @@ namespace Chess_Client
                         if (opBuf[i, 0].type == PieceType.Null)
                         {
                             found = true;
-                            if (currentGameBoard.board[i, 0].type != PieceType.Null && j == 0)
+                            if (currentGameBoard.board[i, bufMove.sourceColIndex].type != PieceType.Null && j == 0)
                                 continue;
                             bufMove.sourceRowIndex = i;
                             bufMove.destRowIndex = 0;
                             bufMove.destColIndex = (int)('o') - (int)('a');
-                            userBuf[i, 0] = currentGameBoard.board[move.destRowIndex, move.destColIndex];
+                            opBuf[i, 0] = currentGameBoard.board[move.destRowIndex, move.destColIndex];
                             return bufMove;
                         }
                     }
                 }
-            }
+            }    
             return bufMove;
         }
         #endregion
@@ -372,6 +373,11 @@ namespace Chess_Client
             StreamWriter sw = new StreamWriter(stream, System.Text.Encoding.ASCII);
             sw.WriteLine(line);
             sw.Flush();
+            if (config_File.Testing == true)
+                using (StreamWriter writer = new StreamWriter(testingFile, true))
+                {
+                    writer.WriteLine(DateTime.Now.ToString("HH:mm:ss ") + "board send: " + line);
+                }
             if (ack == true)
                 return GetBoardAck();
             return true;
@@ -400,7 +406,12 @@ namespace Chess_Client
                 //line = sr.ReadLine();
                 //line = sr.ReadLine();
                 line.TrimEnd('\r');
-                if(line.StartsWith("Error") == true)
+                if (config_File.Testing == true)
+                    using (StreamWriter writer = new StreamWriter(testingFile, true))
+                    {
+                        writer.WriteLine(DateTime.Now.ToString("HH:mm:ss ") + "board recv: " + line);
+                    }
+                if (line.StartsWith("Error") == true)
                 {
                     MessageBox.Show(line);
                     fail = true;
