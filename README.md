@@ -25,3 +25,16 @@ AutoChess have several objectives:
 AutoChess project contain 3 main components:
 ![image](https://user-images.githubusercontent.com/94933763/184927019-ffdc79c8-f003-4536-b3dd-865ad1d93013.png)
 
+## Videos:
+
+Official full AutoChess project showcase:
+
+TBD
+
+AutoChess game:
+
+TBD
+
+AutoChess playlist:
+
+https://www.youtube.com/playlist?list=PL12lizSNudyNNNt3uPAsfWe-hwWfiOhRd
