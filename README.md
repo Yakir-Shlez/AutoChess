@@ -27,13 +27,9 @@ AutoChess project contain 3 main components:
 
 ## Videos
 
-Official full AutoChess project showcase:
+Official AutoChess demo:
 
-TBD
-
-AutoChess game:
-
-TBD
+https://www.youtube.com/watch?v=v7Ry_ZGKD70&ab_channel=YakirShlezinger
 
 AutoChess playlist:
 
