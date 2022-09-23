@@ -11,7 +11,7 @@ AutoChess come to be from the frustration that come from playing chess (and hone
 
 In addition to a personal project, AutoChess turned into ours electrical engineering degree final project for HIT college.
 
-## AutoChess objectives:
+## AutoChess objectives
 
 AutoChess have several objectives:
 
@@ -20,8 +20,21 @@ AutoChess have several objectives:
 - Give the user the experience of playing on an actual traditional chess board.
 - Give the user the ability to play remotely with friend even if they don't own a AutoChess board.
 
-## AutoChess architecture:
+## AutoChess architecture
 
 AutoChess project contain 3 main components:
 ![image](https://user-images.githubusercontent.com/94933763/184927019-ffdc79c8-f003-4536-b3dd-865ad1d93013.png)
 
+## Videos
+
+Official full AutoChess project showcase:
+
+TBD
+
+AutoChess game:
+
+TBD
+
+AutoChess playlist:
+
+https://www.youtube.com/playlist?list=PL12lizSNudyNNNt3uPAsfWe-hwWfiOhRd
