@@ -810,6 +810,8 @@ namespace Chess_Client
             Label[] DLabels = new Label[] { D0Label, D1Label, D2Label, D3Label, D4Label, D5Label, D6Label, D7Label };
 
             currentGameBoard = new ChessBoard((PieceColor)white, gameTime, allSquaresPanels, allSquaresLabels, LLabels, RLabels, ULabels, DLabels, config_File.Testing ? boardScoreLabel : null);
+            if (boardClient != null && boardClient.Connected == true)
+                currentGameBoard.boardGame = true;
             currentGameBoard.PrintBoard(new Move());
 
             timeMe.Text = gameTime.ToString();
@@ -832,12 +834,7 @@ namespace Chess_Client
             promotionFlagWait = false;
 
             if (boardClient != null && boardClient.Connected == true)
-            {
                 boardClient.GameInit(currentGameBoard.Copy());
-                currentGameBoard.boardGame = true;
-            }
-            else
-                currentGameBoard.boardGame = false;
         }
 
         private void cancelSearch_Click(object sender, EventArgs e)

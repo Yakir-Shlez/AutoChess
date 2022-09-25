@@ -739,10 +739,10 @@ namespace Chess_Client
 
             for (int i = 0; i < 8; i++)
             {
-                LLabels[i].Text = (FlipRowIndex(i) + 1).ToString();
-                RLabels[i].Text = (FlipRowIndex(i) + 1).ToString();
-                ULabels[i].Text = ((char)(FlipColIndex(i) + (int)'A')).ToString();
-                DLabels[i].Text = ((char)(FlipColIndex(i) + (int)'A')).ToString();
+                LLabels[i].Text = ((this.boardGame ? 7 - i : FlipRowIndex(i)) + 1).ToString();
+                RLabels[i].Text = ((this.boardGame ? 7 - i : FlipRowIndex(i)) + 1).ToString();
+                ULabels[i].Text = ((char)((this.boardGame ? i : FlipColIndex(i)) + (int)'A')).ToString();
+                DLabels[i].Text = ((char)((this.boardGame ? i : FlipColIndex(i)) + (int)'A')).ToString();
             }
 
             if (scoreLabel != null) scoreLabel.Text = totalBoardScore.ToString();
@@ -778,7 +778,7 @@ namespace Chess_Client
         {
             bool flipVertical;
 
-            if (myColor == PieceColor.White && boardGame != false)
+            if (myColor == PieceColor.White)
                 flipVertical = true;
             else
                 flipVertical = false;
@@ -789,7 +789,7 @@ namespace Chess_Client
         {
             bool flipHorizontal;
 
-            if (myColor == PieceColor.White && boardGame != false)
+            if (myColor == PieceColor.White)
                 flipHorizontal = false;
             else
                 flipHorizontal = true;
