@@ -73,6 +73,11 @@ C:\Users\yakir\Projects\Degree project\Client_2\Chess_Client\Chess_Client\obj\De
 C:\Users\yakir\Projects\Degree project\Client_2\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.CopyComplete
 C:\Users\yakir\Projects\Degree project\Client_2\Chess_Client\Chess_Client\obj\Debug\Chess_Client.exe
 C:\Users\yakir\Projects\Degree project\Client_2\Chess_Client\Chess_Client\obj\Debug\Chess_Client.pdb
+C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\bin\Debug\Chess_Client.exe.config
+C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\bin\Debug\Chess_Client.exe
+C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\bin\Debug\Chess_Client.pdb
+C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\bin\Debug\InTheHand.Net.Bluetooth.dll
+C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\bin\Debug\InTheHand.Net.Bluetooth.xml
 C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.AssemblyReference.cache
 C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.SuggestedBindingRedirects.cache
 C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.ResolveComReference.cache
@@ -83,11 +88,6 @@ C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\obj\Debu
 C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.Settings.resources
 C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.GenerateResource.cache
 C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.CoreCompileInputs.cache
+C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.CopyComplete
 C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.exe
 C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.pdb
-C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\bin\Debug\Chess_Client.exe.config
-C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\bin\Debug\Chess_Client.exe
-C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\bin\Debug\Chess_Client.pdb
-C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\bin\Debug\InTheHand.Net.Bluetooth.dll
-C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\bin\Debug\InTheHand.Net.Bluetooth.xml
-C:\Users\yakir\Projects\Degree project\Client\Chess_Client\Chess_Client\obj\Debug\Chess_Client.csproj.CopyComplete

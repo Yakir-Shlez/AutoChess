@@ -112,13 +112,19 @@ namespace Chess_Client
             }
             return graph;
         }
-        static public List<List<Move>> GetShortestPath(ChessBoard board, PieceToMove piece, List<List<Move>> avoidPieces, Move avoidSourceMove)
+        static public List<List<Move>> GetShortestPath(ChessBoard board, PieceToMove piece, List<List<Move>> avoidPieces, Move avoidSourceMove, out int score)
         {
-            return GetShortestPath(board, new Move(piece.rowIndex, piece.colIndex, -1, -1), avoidPieces, avoidSourceMove);
+            return GetShortestPath(board, new Move(piece.rowIndex, piece.colIndex, -1, -1), avoidPieces, avoidSourceMove, out score);
         }
 
-        static public List<List<Move>> GetShortestPath(ChessBoard board, Move move, List<List<Move>> avoidPieces, Move avoidSourceMove)
+        static public List<List<Move>> GetShortestPath(ChessBoard board, Move move, List<List<Move>> avoidPieces, Move avoidSourceMove, out int score)
         {
+			if (move.destColIndex == move.sourceColIndex && move.destRowIndex == move.sourceRowIndex)
+            {
+                score = 0;
+                return new List<List<Move>>() { new List<Move>() { new Move(move.sourceRowIndex, move.sourceColIndex, move.destRowIndex, move.destColIndex) } };
+            }
+            score = int.MaxValue;
             if (avoidPieces == null)
                 avoidPieces = new List<List<Move>>();
 
@@ -134,6 +140,7 @@ namespace Chess_Client
             List<Move> allMoves = new List<Move>();
             if (move.destRowIndex != -1 && move.destColIndex != -1)
             {
+                score = dist[dst];
                 while (dst != src)
                 {
                     allMoves.Add(new Move(parent[dst] / 8, parent[dst] % 8, dst / 8, dst % 8));
@@ -170,6 +177,7 @@ namespace Chess_Client
                     }
                 }
 
+                score = minDist;
                 dst = minDistIndex;
                 while (dst != src)
                 {
@@ -205,7 +213,7 @@ namespace Chess_Client
                 {
                     if (board.board[piece.rowIndex, piece.colIndex].type == PieceType.Null)
                         continue;
-                    List<List<Move>> tmpMoves = GetShortestPath(board, piece, new List<List<Move>>(avoidPieces), avoidSourceMove);
+                    List<List<Move>> tmpMoves = GetShortestPath(board, piece, new List<List<Move>>(avoidPieces), avoidSourceMove, out int tempScore);
                     allMovesList.AddRange(tmpMoves);
                 }
             }

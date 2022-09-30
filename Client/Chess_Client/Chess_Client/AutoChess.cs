@@ -295,7 +295,7 @@ namespace Chess_Client
                     {
                         testingFile = testingLogPath + @"\Chess_Client_Log" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss") + ".txt";
                         File.Create(testingFile).Dispose();
-                        AIData.Visible = true;
+                        
 
                         if (config_File.Testing_AI)
                         {
@@ -404,6 +404,7 @@ namespace Chess_Client
                 this.Invoke(new Action<string>(UpdateAiProgress), new object[] { progress });
             else
             {
+                AIData.Visible = true;
                 AIProgress.Text = progress;
             }
         }

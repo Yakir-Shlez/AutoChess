@@ -56,13 +56,33 @@ namespace Chess_Client
             if (bufferMove == null && currentGameBoard.board[move.destRowIndex, move.destColIndex].type != PieceType.Null)
             {
                 //capture
-                Move tempBufferMove = GetNextCaptureMove(move, currentGameBoard);
-                Move preBufferMove = new Move(move.destRowIndex, move.destColIndex, tempBufferMove.sourceRowIndex, tempBufferMove.sourceColIndex);
+                List<Move> tempBufferMoves = GetNextCaptureMove(move, currentGameBoard);
+
+                Move tempBufferMove = null;
+                Move tempPreBufferMove = null;
+                Move preBufferMove = null;
+                int bestScore = int.MaxValue;
+                for (int i = 0; i < tempBufferMoves.Count; i++)
+                {
+                    tempPreBufferMove = new Move(move.destRowIndex, move.destColIndex, tempBufferMoves[i].sourceRowIndex, tempBufferMoves[i].sourceColIndex);
+                    PathFindingAlg.GetShortestPath(currentGameBoard.Copy(), tempPreBufferMove, null, null, out int tempScore);
+                    if (tempScore < bestScore)
+                    {
+                        bestScore = tempScore;
+                        preBufferMove = tempPreBufferMove;
+                        tempBufferMove = tempBufferMoves[i];
+                    }
+                }
+
                 SendBoardMove(preBufferMove, currentGameBoard, tempBufferMove);
                 currentGameBoard.board[move.destRowIndex, move.destColIndex] = new Piece();
+                if (tempBufferMove.destColIndex == (int)('u') - (int)('a'))
+                    userBuf[tempBufferMove.sourceRowIndex, tempBufferMove.destRowIndex] = new Piece(PieceType.Pawn, PieceColor.White);
+                else
+                    opBuf[tempBufferMove.sourceRowIndex, tempBufferMove.destRowIndex] = new Piece(PieceType.Pawn, PieceColor.White);
             }
 
-            List<List<Move>> allMovesToSend = PathFindingAlg.GetShortestPath(currentGameBoard.Copy(), move, null, null);
+            List<List<Move>> allMovesToSend = PathFindingAlg.GetShortestPath(currentGameBoard.Copy(), move, null, null, out int score);
 
 
             for (int i = 0; i < allMovesToSend.Count; i++)
@@ -232,89 +252,37 @@ namespace Chess_Client
                 opBuf[i, 1] = nullPiece;
             }
         }
-        public Move GetNextCaptureMove(Move move, ChessBoard currentGameBoard)
+        public List<Move> GetNextCaptureMove(Move move, ChessBoard currentGameBoard)
         {
-            Move bufMove = new Move();
-            bool found = true;
-            bufMove.sourceColIndex = currentGameBoard.currentTurn == GameState.OpTurn ? 
+            List<Move> bufMove = new List<Move>();
+            int sourceColIndex = currentGameBoard.currentTurn == GameState.OpTurn ? 
                 (currentGameBoard.myColor == PieceColor.White ? 7 : 0) :
                 (currentGameBoard.myColor == PieceColor.White ? 0 : 7);
-            found = false;
             if (currentGameBoard.currentTurn == GameState.OpTurn)
             {
-                for (int j = 0; j == 0 || (j == 1 && found == true); j++)
-                {
-                    for (int i = 0; i < 8; i++)
-                    {
-                        if (userBuf[i, 1].type == PieceType.Null)
-                        {
-                            found = true;
-                            if (currentGameBoard.board[i, bufMove.sourceColIndex].type != PieceType.Null && j == 0)
-                                continue;
-                            bufMove.sourceRowIndex = i;
-                            bufMove.destRowIndex = 1;
-                            bufMove.destColIndex = (int)('u') - (int)('a');
-                            userBuf[i, 1] = currentGameBoard.board[move.destRowIndex, move.destColIndex];
-                            return bufMove;
-                        }
-                    }
-                }
-                found = false;
-                for (int j = 0; j == 0 || (j == 1 && found == true); j++)
-                {
-                    for (int i = 0; i < 8; i++)
-                    {
-                        if (userBuf[i, 0].type == PieceType.Null)
-                        {
-                            found = true;
-                            if (currentGameBoard.board[i, bufMove.sourceColIndex].type != PieceType.Null && j == 0)
-                                continue;
-                            bufMove.sourceRowIndex = i;
-                            bufMove.destRowIndex = 0;
-                            bufMove.destColIndex = (int)('u') - (int)('a');
-                            userBuf[i, 0] = currentGameBoard.board[move.destRowIndex, move.destColIndex];
-                            return bufMove;
-                        }
-                    }
-                }
+                for (int i = 0; i < 8; i++)
+                    if (userBuf[i, 1].type == PieceType.Null)
+                        bufMove.Add(new Move(i, sourceColIndex, 1, (int)('u') - (int)('a')));
+                if (bufMove.Count != 0)
+                    return bufMove;
+                for (int i = 0; i < 8; i++)
+                    if (userBuf[i, 0].type == PieceType.Null)
+                        bufMove.Add(new Move(i, sourceColIndex, 0, (int)('u') - (int)('a')));
+                if (bufMove.Count != 0)
+                    return bufMove;
             }
             else
             {
-                for (int j = 0; j == 0 || (j == 1 && found == true); j++)
-                {
-                    for (int i = 0; i < 8; i++)
-                    {
-                        if (opBuf[i, 1].type == PieceType.Null)
-                        {
-                            found = true;
-                            if (currentGameBoard.board[i, bufMove.sourceColIndex].type != PieceType.Null && j == 0)
-                                continue;
-                            bufMove.sourceRowIndex = i;
-                            bufMove.destRowIndex = 1;
-                            bufMove.destColIndex = (int)('o') - (int)('a');
-                            opBuf[i, 1] = currentGameBoard.board[move.destRowIndex, move.destColIndex];
-                            return bufMove;
-                        }
-                    }
-                }
-                found = false;
-                for (int j = 0; j == 0 || (j == 1 && found == true); j++)
-                {
-                    for (int i = 0; i < 8; i++)
-                    {
-                        if (opBuf[i, 0].type == PieceType.Null)
-                        {
-                            found = true;
-                            if (currentGameBoard.board[i, bufMove.sourceColIndex].type != PieceType.Null && j == 0)
-                                continue;
-                            bufMove.sourceRowIndex = i;
-                            bufMove.destRowIndex = 0;
-                            bufMove.destColIndex = (int)('o') - (int)('a');
-                            opBuf[i, 0] = currentGameBoard.board[move.destRowIndex, move.destColIndex];
-                            return bufMove;
-                        }
-                    }
-                }
+                for (int i = 0; i < 8; i++)
+                    if (opBuf[i, 1].type == PieceType.Null)
+                        bufMove.Add(new Move(i, sourceColIndex, 1, (int)('o') - (int)('a')));
+                if (bufMove.Count != 0)
+                    return bufMove;
+                for (int i = 0; i < 8; i++)
+                    if (opBuf[i, 0].type == PieceType.Null)
+                        bufMove.Add(new Move(i, sourceColIndex, 0, (int)('o') - (int)('a')));
+                if (bufMove.Count != 0)
+                    return bufMove;
             }    
             return bufMove;
         }
