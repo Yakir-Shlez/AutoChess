@@ -809,7 +809,8 @@ namespace Chess_Client
             Label[] ULabels = new Label[] { U0Label, U1Label, U2Label, U3Label, U4Label, U5Label, U6Label, U7Label };
             Label[] DLabels = new Label[] { D0Label, D1Label, D2Label, D3Label, D4Label, D5Label, D6Label, D7Label };
 
-            currentGameBoard = new ChessBoard((PieceColor)white, gameTime, allSquaresPanels, allSquaresLabels, LLabels, RLabels, ULabels, DLabels, config_File.Testing ? boardScoreLabel : null);
+            currentGameBoard = new ChessBoard((PieceColor)white, gameTime, allSquaresPanels, allSquaresLabels, LLabels, RLabels, ULabels, DLabels, 
+                (config_File.Testing && config_File.Testing_AI) ? boardScoreLabel : null);
             if (boardClient != null && boardClient.Connected == true)
                 currentGameBoard.boardGame = true;
             currentGameBoard.PrintBoard(new Move());
