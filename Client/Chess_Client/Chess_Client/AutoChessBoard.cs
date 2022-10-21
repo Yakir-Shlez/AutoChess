@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows.Forms;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
+using System.Threading;
 
 namespace Chess_Client
 {

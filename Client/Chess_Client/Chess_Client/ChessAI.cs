@@ -169,6 +169,13 @@ namespace Chess_Client
                     }
                     AINode sonNode;
                     minimax(copy, depth + 1, alpha, beta, ChessBoard.GetOpColor(color), forbiddenMove, out currentScore, out sonNode);
+                    if (sonNode.bestMove.destColIndex == -1 && sonNode.bestMove.destRowIndex == -1) //Win
+                    {
+                        if (max == true)
+                            currentScore = int.MaxValue;
+                        else
+                            currentScore = int.MinValue;
+                    }
                     currentNode.allScores.Add(currentScore);
                     currentNode.allPossibleNodes.Add(sonNode);
                 }
@@ -199,7 +206,7 @@ namespace Chess_Client
                     if (beta <= alpha)
                         break;
                 }
-            }
+            }  
             currentNode.bestMove = bestMove;
             currentNode.bestScore = bestScore;
             return bestMove;

@@ -606,7 +606,11 @@ namespace Chess_Client
 
             if (found == false)
             {
-                MessageBox.Show("You lost, sorry :(");
+                found = currentGameBoard.CheckChess(-1, -1, out int outKingRowIndex, out int outKingColIndex, currentGameBoard.myColor);
+                if(found == false)
+                    MessageBox.Show("It's a Stalemate!");
+                else
+                    MessageBox.Show("You lost, sorry :(");
                 if (config_File.Testing == true)
                     using (StreamWriter writer = new StreamWriter(testingFile, true))
                     {
@@ -1654,6 +1658,7 @@ namespace Chess_Client
                 secondAi = new ChessAI(currentGameBoard, chessAIDeifficulty, currentGameBoard.myColor,
                 null, config_File.Testing && config_File.Testing_AI, config_File.Testing && config_File.Testing_AI_Brain, testingAILogPath);
             }
+
             if (white == 0 || (config_File.Testing == true && config_File.Testing_Ai_Vs_Ai == true))
                 OfflineGameHandler(true);
             else if(boardClient!= null && boardClient.Connected == true)
