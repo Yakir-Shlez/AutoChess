@@ -1,6 +1,6 @@
 # AutoChess
 
-AutoChess is a chess board to play with alone and feel as real and traditional as possible.
+AutoChess is a chess board to play chess alone and feel as real and traditional as possible.
 
 # Note
 Please be aware that AutoChess is (and probably always will be) a work in progress!
