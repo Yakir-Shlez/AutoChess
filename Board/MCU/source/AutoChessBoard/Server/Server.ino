@@ -57,8 +57,8 @@ const int MICRO_STEPS = 16;
 
 const float SQUARE_TO_MM = 56.5;
 const float BUF_FIRST_LINE_Y = 48;
-const float BUF_SECOND_LINE_Y = 38;
-const float BUF_SECOND_LINE_X = 30;
+const float BUF_SECOND_LINE_Y = 32;
+const float BUF_SECOND_LINE_X = 20;
 const int STEPS_PER_MM = 5 * MICRO_STEPS;
 const float MAX_X_POSITION_MM = 453;
 const float MAX_Y_POSITION_MM = 571; 
@@ -80,10 +80,34 @@ bool connected = false;
 bool board[8][8];
 bool curBoard[8][8];
 
+float boardSquareLocXRow[8][8] =
+  {{-427.5882 ,-427 ,-428.9048 ,-427 ,-430.5 ,-429.5 ,-430.4091 ,-430.5714},
+  {-377 ,-373.8421 ,-372 ,-372 ,-372 ,-372.4546 ,-376.2105 ,-375.75},
+  {-315 ,-314.8261 ,-317 ,-312.5 ,-317 ,-317.4546 ,-318.8421 ,-317.5882},
+  {-258.7647 ,-259.5 ,-258.1111 ,-259.5 ,-259.5 ,-257.3333 ,-260.9474 ,-260.9131},
+  {-195.4615 ,-200.9474 ,-202.5882 ,-201.5455 ,-200.9474 ,-202 ,-202 ,-202.25},
+  {-142 ,-143.6667 ,-143.1111 ,-142.7895 ,-142.8696 ,-143.1111 ,-143.1111 ,-148.7647},
+  {-83.66666 ,-86.41177 ,-85 ,-88.11111 ,-85.1579 ,-85.88889 ,-87.45454 ,-90.1579},
+  {-29.5 ,-28.25 ,-28.84211 ,-28.25 ,-27.58824 ,-27 ,-28.11111 ,-33.76471}};
+  
+float boardSquareLocYCol[8][8] =
+  {{483.0588 ,423.5 ,369.8095 ,311 ,256.5 ,198.5 ,136.6818 ,83.5},
+  {481.7692 ,424.9474 ,366 ,311 ,256 ,200.5455 ,140.2105 ,84.125},
+  {483 ,425.1304 ,368.5 ,311.25 ,256 ,200.5455 ,142.0526 ,83.05882},
+  {483.3529 ,427.4286 ,368.5 ,313.5 ,256 ,199 ,137.8421 ,85.56522},
+  {486 ,426 ,368.9412 ,311.4546 ,256 ,201 ,142.6667 ,85.5},
+  {483.5 ,427.3333 ,368.5 ,311.7895 ,256 ,198.5 ,143.5 ,86},
+  {484.6667 ,428.0588 ,369 ,313.5 ,257.0526 ,198.5 ,141.4545 ,84.94736},
+  {484.5714 ,427.25 ,372.0526 ,314.75 ,258.0588 ,201 ,143.5 ,83.64706}};
+
+
 bool reportChanges = false;
 
 unsigned long magnetOnTime;
 int magnetTimeout = 60 * 1000;
+
+unsigned long motorsOnTime;
+int motorsTimeout = 40 * 60 * 1000;
 
 // REPLACE WITH THE MAC Address of your receiver 
 uint8_t client_A_Address[] = {0x08, 0x3A, 0xF2, 0x94, 0x42, 0x08};
@@ -140,6 +164,11 @@ void loop() {
   if(magnetOnTime != 0 && millis() > magnetOnTime + magnetTimeout)
   {
     EnableDisableMagnet(false);
+  }
+
+  if(motorsOnTime != 0 && millis() > motorsOnTime + motorsTimeout)
+  {
+    EnableDisableMotors(false);
   }
   //delay(20);
 }
@@ -265,7 +294,7 @@ void ReceiveClientCmd()
   buf = SerialBT.readStringUntil('\n');
   buf.remove(buf.length()-1, 1);
   
-  Serial.printf("Client cmd: |%s|\n", buf.c_str()); //TBD
+  Serial.printf("Client cmd: |%s|\n", buf.c_str());
   
   if(buf == "report")
   {
@@ -293,6 +322,31 @@ void ReceiveClientCmd()
   {
     Serial.printf("stopmove\n");
     Cmd_stopmove();
+  }
+  else if(buf == "startgame")
+  {
+    Serial.printf("startgame\n");
+    Cmd_startgame();
+  }
+  else if(buf == "endgame")
+  {
+    Serial.printf("stopgame\n");
+    Cmd_stopgame();
+  }
+  else if(buf == "magneton")
+  {
+    Serial.printf("magneton\n");
+    EnableDisableMagnet(true);
+  }
+  else if(buf == "magnetoff")
+  {
+    Serial.printf("magnetoff\n");
+    EnableDisableMagnet(false);
+  }
+  else if(buf == "checkdrift")
+  {
+    Serial.printf("checkdrift\n");
+    Cmd_checkdrift();
   }
   else
   {
@@ -389,8 +443,27 @@ void Cmd_move(String cmdMove)
       return;
   }
 
-  PerformCommandedMove(commandedMove);
-
+  int success = 0;
+  while(success != 1)
+  {
+    success = 0;
+  	PerformCommandedMove(commandedMove);
+    if(commandedMove.destColIndex >= 0 && commandedMove.destColIndex <= 7) // not a buffer move
+    {
+      delay(50);
+    	UpdateCurBoard();
+    	if(curBoard[commandedMove.destRowIndex][commandedMove.destColIndex] == 1)
+    	{
+    	  Serial.println("Move success");
+    	  success = 1;
+    	}
+    	else
+    	 Serial.println("Move fail");
+    }
+    else
+      success = 1;
+  }
+  
   SerialBT.println("Ack__");
   Serial.println("Ack__");
 }
@@ -403,7 +476,31 @@ void Cmd_startmove()
 void Cmd_stopmove()
 {
   SetRGBStandby();
-  EnableDisableMagnet(false);
+}
+
+void Cmd_startgame()
+{
+  EnableDisableMotors(1);
+}
+
+void Cmd_stopgame()
+{
+  EnableDisableMotors(0);
+}
+
+void Cmd_checkdrift()
+{
+  int steps = 0;
+  steps = MoveXSteps(MAX_X_POSITION_MM * STEPS_PER_MM);
+  Serial.printf("rowIndex: %d colIndex: %d\n", curHeadLocation.rowIndex, curHeadLocation.colIndex);
+  Serial.printf("boardSquareLocXRow: %f steps: %d x: %f\n", boardSquareLocXRow[curHeadLocation.rowIndex][curHeadLocation.colIndex], steps, ((float)steps / (float)STEPS_PER_MM));
+  SerialBT.printf("%f\n", ((float)steps / (float)STEPS_PER_MM) + boardSquareLocXRow[curHeadLocation.rowIndex][curHeadLocation.colIndex]);
+  steps = 0;
+  steps = MoveYSteps(-1 * MAX_Y_POSITION_MM * STEPS_PER_MM);
+  Serial.printf("rowIndex: %d colIndex: %d\n", curHeadLocation.rowIndex, curHeadLocation.colIndex);
+  Serial.printf("boardSquareLocYCol: %f steps: %d y: %f\n", boardSquareLocYCol[curHeadLocation.rowIndex][curHeadLocation.colIndex], steps, ((float)steps / (float)STEPS_PER_MM));
+  SerialBT.printf("%f\n", ((float)steps / (float)STEPS_PER_MM) - boardSquareLocYCol[curHeadLocation.rowIndex][curHeadLocation.colIndex]);
+  HomeToSquareZero();
 }
 
 void UpdateCurBoard()
@@ -455,7 +552,6 @@ void UpdateCurBoard()
   for(int i = 0; i < 4; i++)
   {
     currentData = incomingReadingsClients[i].groupA;
-    //TBD - check if this algorithem is too slow
     for(int j = 0; j < 8; j++)
     {
       curBoard[i * 2][j] = !(currentData % 2);
@@ -581,23 +677,24 @@ void PerformCommandedMove(Move commandedMove)
   {
     EnableDisableMagnet(false);
     Serial.printf("Moving to source row \n");
-    MoveXSquares(commandedMove.sourceRowIndex - curHeadLocation.rowIndex);
+    MoveXSquares(commandedMove.sourceRowIndex, curHeadLocation.rowIndex, curHeadLocation.colIndex);
+    curHeadLocation.rowIndex = commandedMove.sourceRowIndex;
   }
+  
   if(commandedMove.sourceColIndex != curHeadLocation.colIndex)
   {
     EnableDisableMagnet(false);
     Serial.printf("Moving to source col \n");
-    MoveYSquares(commandedMove.sourceColIndex - curHeadLocation.colIndex);
+    MoveYSquares(commandedMove.sourceColIndex, curHeadLocation.colIndex, curHeadLocation.rowIndex);
+    curHeadLocation.colIndex = commandedMove.sourceColIndex;
   }
-
-  curHeadLocation.rowIndex = commandedMove.sourceRowIndex;
-  curHeadLocation.colIndex = commandedMove.sourceColIndex;
   
   if(commandedMove.destRowIndex != curHeadLocation.rowIndex)
   {
     EnableDisableMagnet(true);
     Serial.printf("Moving to destination row\n");
-    MoveXSquares(commandedMove.destRowIndex - curHeadLocation.rowIndex);
+    MoveXSquares(commandedMove.destRowIndex, curHeadLocation.rowIndex, curHeadLocation.colIndex);
+	  EnableDisableMagnet(false);
     curHeadLocation.rowIndex = commandedMove.destRowIndex;
   }
   
@@ -607,19 +704,22 @@ void PerformCommandedMove(Move commandedMove)
     Serial.printf("Moving to destination col\n");
     if(commandedMove.destColIndex >= 0 && commandedMove.destColIndex <= 7)
     {
-      MoveYSquares(commandedMove.destColIndex - curHeadLocation.colIndex);
+      MoveYSquares(commandedMove.destColIndex, curHeadLocation.colIndex, curHeadLocation.rowIndex);
+	    EnableDisableMagnet(false);
       curHeadLocation.colIndex = commandedMove.destColIndex;
     }
     else //buf move
     {
       if(commandedMove.destColIndex == -1)
       {
+		    EnableDisableMagnet(true);
         MoveYmm(BUF_FIRST_LINE_Y);
         EnableDisableMagnet(false);
         MoveYmm(0 - BUF_FIRST_LINE_Y);
       }
       else if(commandedMove.destColIndex == -2)
       {
+		    EnableDisableMagnet(true);
         MoveYmm(BUF_FIRST_LINE_Y);
         MoveXmm(BUF_SECOND_LINE_X);
         MoveYmm(BUF_SECOND_LINE_Y);
@@ -629,13 +729,15 @@ void PerformCommandedMove(Move commandedMove)
       }
       if(commandedMove.destColIndex == 8)
       {
-        MoveYmm(0 - BUF_FIRST_LINE_Y);
+        EnableDisableMagnet(true);
+		    MoveYmm(0 - BUF_FIRST_LINE_Y);
         EnableDisableMagnet(false);
         MoveYmm(BUF_FIRST_LINE_Y);
       }
       else if(commandedMove.destColIndex == 9)
       {
-        MoveYmm(0 - BUF_FIRST_LINE_Y);
+        EnableDisableMagnet(true);
+		    MoveYmm(0 - BUF_FIRST_LINE_Y);
         MoveXmm(BUF_SECOND_LINE_X);
         MoveYmm(0 - BUF_SECOND_LINE_Y);
         EnableDisableMagnet(false);
@@ -653,12 +755,14 @@ void EnableDisableMotors(bool enableDisable)
     Serial.printf("Enable Motors\n");
     digitalWrite(EN_PIN_A, LOW);
     digitalWrite(EN_PIN_B, LOW);
+    motorsOnTime = millis();
   }
   else
   {
     Serial.printf("Disable Motors\n");
     digitalWrite(EN_PIN_A, HIGH);
     digitalWrite(EN_PIN_B, HIGH);
+    motorsOnTime = 0;
   }
 }
 
@@ -694,22 +798,28 @@ void HomeY()
 
 void HomeToSquareZero()
 {
-  MoveXmm(-30.5);
-  MoveYmm(89.5);
+  MoveXmm(boardSquareLocXRow[7][7]);
+  MoveYmm(boardSquareLocYCol[7][7]);
   curHeadLocation.rowIndex = 7;
   curHeadLocation.colIndex = 7;
 }
 
-void MoveYSquares(float squares)
+void MoveYSquares(int dstSquareCol, int srcSquareCol, int sqaureRow)
 {
-  Serial.printf("MoveYSquares %f\n", squares);
-  MoveYmm(-1 * squares * SQUARE_TO_MM);
+  Serial.printf("MoveYSquares dstSquareCol:%d srcSquareCol:%d sqaureRow:%d\n", dstSquareCol, srcSquareCol, sqaureRow);
+  float yDel = boardSquareLocYCol[sqaureRow][dstSquareCol] - boardSquareLocYCol[sqaureRow][srcSquareCol];
+  float xDel = boardSquareLocXRow[sqaureRow][dstSquareCol] - boardSquareLocXRow[sqaureRow][srcSquareCol];
+  MoveYmm(yDel);
+  MoveXmm(xDel);
 }
 
-void MoveXSquares(float squares)
+void MoveXSquares(int dstSquareRow, int srcSquareRow, int sqaureCol)
 {
-  Serial.printf("MoveXSquares %f\n", squares);
-  MoveXmm(squares * SQUARE_TO_MM);
+  Serial.printf("MoveXSquares dstSquareRow:%d srcSquareRow:%d sqaureCol:%d\n", dstSquareRow, srcSquareRow, sqaureCol);
+  float yDel = boardSquareLocYCol[dstSquareRow][sqaureCol] - boardSquareLocYCol[srcSquareRow][sqaureCol];
+  float xDel = boardSquareLocXRow[dstSquareRow][sqaureCol] - boardSquareLocXRow[srcSquareRow][sqaureCol];
+  MoveYmm(yDel);
+  MoveXmm(xDel);
 }
 
 void MoveYmm(float mm)
@@ -724,44 +834,44 @@ void MoveXmm(float mm)
   MoveXSteps((int)(mm * STEPS_PER_MM));
 }
 
-void MoveYSteps(int steps)
+int MoveYSteps(int steps)
 {
   Serial.printf("MoveYSteps %d\n", steps);
   if(steps > 0)
   {
     digitalWrite(DIR_PIN_A, LOW);
     digitalWrite(DIR_PIN_B, HIGH);
-    MoveBothMotors(steps, 3);
+    return MoveBothMotors(steps, 3);
   }
   else
   {
     digitalWrite(DIR_PIN_A, HIGH);
     digitalWrite(DIR_PIN_B, LOW);
-    MoveBothMotors(steps * -1, 1);
+    return MoveBothMotors(steps * -1, 1);
   }
 }
 
-void MoveXSteps(int steps)
+int MoveXSteps(int steps)
 {
   Serial.printf("MoveXSteps %d\n", steps);
   if(steps > 0)
   {
     digitalWrite(DIR_PIN_A, HIGH);
     digitalWrite(DIR_PIN_B, HIGH);
-    MoveBothMotors(steps, 4);
+    return MoveBothMotors(steps, 4);
   }
   else
   {
     digitalWrite(DIR_PIN_A, LOW);
     digitalWrite(DIR_PIN_B, LOW);
-    MoveBothMotors(steps * -1, 2);
+    return MoveBothMotors(steps * -1, 2);
   }
 }
 
-void MoveBothMotors(int steps, int dir) //dir 1 == -y, 2 == -x, 3 == +y, 4 == +x 
+int MoveBothMotors(int steps, int dir) //dir 1 == -y, 2 == -x, 3 == +y, 4 == +x 
 {
-  EnableDisableMotors(1);
   Serial.printf("MoveBothMotors steps=%d dir=%d\n", steps, dir);
+  EnableDisableMotors(1);
   int DECC_START;
   int CUR_SPEED = SPEED_START;
   int DELAY_MICRO_SEC = (1000000 / (CUR_SPEED * 2));
@@ -802,10 +912,9 @@ void MoveBothMotors(int steps, int dir) //dir 1 == -y, 2 == -x, 3 == +y, 4 == +x
     if((dir == 4 && digitalRead(X_END_STOP_PIN) == 0) || (dir == 1 && digitalRead(Y_END_STOP_PIN) == 0))
     {
       Serial.printf("MoveBothMotors Endstop\n");
-      EnableDisableMotors(0);
-      break;
+      return i;
     }
   }
   Serial.printf("MoveBothMotors complete\n");
-  EnableDisableMotors(0);
+  return steps;
 }

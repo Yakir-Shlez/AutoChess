@@ -541,6 +541,10 @@ namespace Chess_Client
                     {
                         writer.WriteLine("Player won");
                     }
+                if (boardClient != null && boardClient.Connected == true)
+                {
+                    boardClient.SendToBoard("endgame", false);
+                }
                 currentGameBoard = null;
                 offlineGame = false;
                 gameTimer.Enabled = false;
@@ -616,6 +620,10 @@ namespace Chess_Client
                     {
                         writer.WriteLine("Player lost");
                     }
+                if (boardClient != null && boardClient.Connected == true)
+                {
+                    boardClient.SendToBoard("endgame", false);
+                }
                 currentGameBoard = null;
                 offlineGame = false;
                 gameTimer.Enabled = false;
@@ -1306,6 +1314,10 @@ namespace Chess_Client
                     else if (exactLine == "Win__")
                     {
                         MessageBox.Show("You won, congratulations!!!");
+                        if (boardClient != null && boardClient.Connected == true)
+                        {
+                            boardClient.SendToBoard("endgame", false);
+                        }
                         currentGameBoard = null;
                         DisplayMainMenu(true);
                         return;
@@ -1313,6 +1325,10 @@ namespace Chess_Client
                     else if (exactLine == "Lose_")
                     {
                         MessageBox.Show("You lost, sorry :(");
+                        if (boardClient != null && boardClient.Connected == true)
+                        {
+                            boardClient.SendToBoard("endgame", false);
+                        }
                         currentGameBoard = null;
                         DisplayMainMenu(true);
                         return;
@@ -1340,6 +1356,10 @@ namespace Chess_Client
                     else if (exactLine == "stlmt")
                     {
                         MessageBox.Show("It's a Stalemate!");
+                        if (boardClient != null && boardClient.Connected == true)
+                        {
+                            boardClient.SendToBoard("endgame", false);
+                        }
                         currentGameBoard = null;
                         DisplayMainMenu(true);
                         return;
@@ -1357,6 +1377,10 @@ namespace Chess_Client
                     else if (exactLine == "otime")
                     {
                         MessageBox.Show("Opponent time is over, you won, Congratulations!!!");
+                        if (boardClient != null && boardClient.Connected == true)
+                        {
+                            boardClient.SendToBoard("endgame", false);
+                        }
                         currentGameBoard = null;
                         DisplayMainMenu(true);
                         return;
@@ -1364,6 +1388,10 @@ namespace Chess_Client
                     else if (exactLine == "ytime")
                     {
                         MessageBox.Show("Your's time is up!, you lost, sorry :(");
+                        if (boardClient != null && boardClient.Connected == true)
+                        {
+                            boardClient.SendToBoard("endgame", false);
+                        }
                         currentGameBoard = null;
                         DisplayMainMenu(true);
                         return;
@@ -1619,7 +1647,7 @@ namespace Chess_Client
             int white;
 
             white = rand.NextDouble() >= 0.5 ? 1 : 0;
-
+            white = 1; //TBD
             if (config_File.Testing == true && config_File.Testing_AI && (config_File.Testing_AI_Side == 0 || config_File.Testing_AI_Side == 1))
                 white = config_File.Testing_AI_Side;
 

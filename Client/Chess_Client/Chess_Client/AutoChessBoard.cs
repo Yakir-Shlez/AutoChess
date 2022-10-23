@@ -236,6 +236,7 @@ namespace Chess_Client
                     }
                 }    
             } while (fail == true);
+            SendToBoard("startgame", false);
             return true;
         }
         #endregion
