@@ -27,7 +27,11 @@ AutoChess project contain 3 main components:
 
 ## Videos
 
-Official AutoChess demo:
+Official AutoChess Player VS AI demo:
+
+https://www.youtube.com/watch?v=1ajXO4R3Xsc&ab_channel=YakirShlezinger
+
+Official AutoChess Player VS Player demo:
 
 https://www.youtube.com/watch?v=v7Ry_ZGKD70&ab_channel=YakirShlezinger
 
