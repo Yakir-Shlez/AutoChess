@@ -35,6 +35,10 @@ Official AutoChess Player VS Player demo:
 
 https://www.youtube.com/watch?v=v7Ry_ZGKD70&ab_channel=YakirShlezinger
 
+AutoChess Showcase (Hebrew):
+
+https://www.youtube.com/watch?v=wW4eY5erX1k&t=8s&ab_channel=YakirShlezinger
+
 AutoChess playlist:
 
 https://www.youtube.com/playlist?list=PL12lizSNudyNNNt3uPAsfWe-hwWfiOhRd
