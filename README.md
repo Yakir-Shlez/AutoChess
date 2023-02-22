@@ -9,7 +9,7 @@ Please be aware that AutoChess is (and probably always will be) a work in progre
 
 AutoChess come to be from the frustration that come from playing chess (and honestly, losing :sweat_smile:) on my smartphone instead of a proper full size board. 
 
-In addition to a personal project, AutoChess turned into ours electrical engineering degree final project for HIT college.
+In addition to a personal project, AutoChess turned into my electrical engineering degree final project for HIT college.
 
 ## AutoChess objectives
 
